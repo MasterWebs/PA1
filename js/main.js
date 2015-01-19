@@ -22,16 +22,16 @@ function Rect(x, y, w, h, color) {
 }
 
 function State(canvas) {
-this.canvas = canvas;
-this.context = canvas.getContext("2d");
-this.width = canvas.width;
-this.height = canvas.height;
-this.valid = false;
-this.shapes = [];
-this.nextObject = "pen";
-this.nextColor = "#000000";
-this.dragging = false;
-this.selection = null;
+	this.canvas = canvas;
+	this.context = canvas.getContext("2d");
+	this.width = canvas.width;
+	this.height = canvas.height;
+	this.valid = false;
+	this.shapes = [];
+	this.nextObject = "pen";
+	this.nextColor = "#000000";
+	this.dragging = false;
+	this.selection = null;
 }
 
 State.prototype.clear = function() {
@@ -59,7 +59,6 @@ Rect.prototype = new Shape();
 var state = new State(document.getElementById("myCanvas"));
 
 $(document).ready(function() {
-
     var startX = 0;
     var startY = 0;
 
@@ -73,9 +72,23 @@ $(document).ready(function() {
     	startY = e.pageY - this.offsetTop;
     });
 
-    $("#myCanvas").mousemove( function() {
-    	state.valid = false;
-    })
+    $("#myCanvas").mousemove( function(e) {
+    	if(state.dragging) {
+	    	state.shapes.pop();
+	    	state.valid = false;
+
+	    	var currX = e.pageX - this.offsetLeft;
+	    	var currY = e.pageY - this.offsetTop;
+
+	    	var x = (startX < currX) ? startX : currX;
+	    	var y = (startY < currY) ? startY : currY;
+
+	    	var width = Math.abs(startX - currX);
+	    	var height = Math.abs(startY - currY);
+
+	    	state.shapes.push(new Rect(x, y, width, height));
+	    }
+    });
 
     $("#myCanvas").mouseup( function(e) {
     	state.dragging = false;
@@ -83,10 +96,13 @@ $(document).ready(function() {
     	var endX = e.pageX - this.offsetLeft;
     	var endY = e.pageY - this.offsetTop;
 
+    	var x = (startX < endX) ? startX : endX;
+    	var y = (startY < endY) ? startY : endY;
+
 		var width = Math.abs(startX - endX);
 		var height = Math.abs(startY - endY);
 
-		state.shapes.push(new Rect(startX, startY, width, height));
+		state.shapes.push(new Rect(x, y, width, height));
     });
 
 
