@@ -21,17 +21,23 @@ function Rect(x, y, w, h, color) {
 	}
 }
 
+function Circle(x, y, w, h, color) {
+	this.x = x;
+	this.y = y;
+	this.color = color;
+}
+
 function State(canvas) {
-this.canvas = canvas;
-this.context = canvas.getContext("2d");
-this.width = canvas.width;
-this.height = canvas.height;
-this.valid = false;
-this.shapes = [];
-this.nextObject = "pen";
-this.nextColor = "#000000";
-this.dragging = false;
-this.selection = null;
+	this.canvas = canvas;
+	this.context = canvas.getContext("2d");
+	this.width = canvas.width;
+	this.height = canvas.height;
+	this.valid = false;
+	this.shapes = [];
+	this.nextObject = "pen";
+	this.nextColor = "#000000";
+	this.dragging = false;
+	this.selection = null;
 }
 
 State.prototype.clear = function() {
@@ -59,6 +65,7 @@ Rect.prototype = new Shape();
 var state = new State(document.getElementById("myCanvas"));
 
 $(document).ready(function() {
+	
 
     var startX = 0;
     var startY = 0;
@@ -132,6 +139,26 @@ $(document).ready(function() {
 	});
 
 	
-
-
 });
+
+
+$("#circle").click( function() {
+		state.nextObject = "circle";
+});
+
+$("#rect").click( function() {
+		state.nextObject = "rect";
+});
+
+$("#line").click( function() {
+		state.nextObject = "line";
+});
+
+$("#text").click( function() {
+		state.nextObject = "text";
+});
+
+$("#pen").click( function() {
+		state.nextObject = "pen";
+});
+
