@@ -3,7 +3,6 @@
  */
 
 $(document).ready(function() {
-	console.log("yup");
 	var canvas = document.getElementById('myCanvas');
     var context = canvas.getContext('2d');
 
@@ -11,7 +10,3 @@ $(document).ready(function() {
 	context.fillStyle = 'blue';
 	context.fillText('Hello World', 150, 100);
 });
-
-function yep() {
-	alert("works");
-}
