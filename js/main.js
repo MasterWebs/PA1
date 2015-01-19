@@ -3,7 +3,7 @@
  */
 
 $(document).ready(function() {
-
+	console.log("yup");
 	var canvas = document.getElementById('myCanvas');
     var context = canvas.getContext('2d');
 
