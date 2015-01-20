@@ -1,0 +1,71 @@
+body {
+    font-family:sans-serif;
+    width: 960px;
+    margin: 0 auto;
+
+}
+
+#objects {
+    margin:4px;
+   
+    float:left;
+}
+
+#objects label {
+    float:left;
+    width:170px;
+    margin:4px;
+    background-color:#EFEFEF;
+    border-radius:4px;
+    border:1px solid #D0D0D0;
+    overflow:auto;
+       
+}
+
+#objects label span {
+    text-align:center;
+    font-size: 32px;
+    padding:13px 0px;
+    display:block;
+}
+
+#objects label input {
+    position:absolute;
+    top:-20px;
+}
+
+#objects label button {
+    text-align:center;
+    font-size: 32px;
+    padding:13px 0px;
+    display:block;
+}
+
+#objects input:checked + span {
+    background-color:#404040;
+    color:#F7F7F7;
+}
+
+#objects .yellow {
+    background-color:#FFCC00;
+    color:#333;
+}
+
+#objects .blue {
+    background-color:#00BFFF;
+    color:#333;
+}
+
+#objects .pink {
+    background-color:#FF99FF;
+    color:#333;
+}
+
+#objects .green {
+    background-color:#A3D900;
+    color:#333;
+}
+#objects .purple {
+    background-color:#B399FF;
+    color:#333;
+}
