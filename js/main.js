@@ -21,6 +21,20 @@ function Rect(x, y, w, h, color) {
 	}
 }
 
+function Text(text, x, y, font, color) {
+	this.x = x;
+	this.y = y;
+	this.color = color;
+
+	this.draw = function() {
+		var context = state.context;
+
+		context.font = font;
+		context.fillStyle = color;
+		context.fillText(text, x, y);
+	}
+}
+
 function Circle(x, y, w, color ) {
 	this.x = x;
 	this.y = y;
@@ -35,6 +49,10 @@ function Circle(x, y, w, color ) {
 		context.fill();
 	}	
 }
+
+Text.prototype = new Shape();
+Rect.prototype = new Shape();
+Circle.prototype = new Shape();
 
 function State(canvas) {
 	this.canvas = canvas;
@@ -69,8 +87,6 @@ State.prototype.drawAll = function() {
 	}
 }
 
-Rect.prototype = new Shape();
-
 var state = new State(document.getElementById("myCanvas"));
 
 $(document).ready(function() {
@@ -80,6 +96,18 @@ $(document).ready(function() {
     setInterval(function() {  state.drawAll(); }, 30);
 
     $("#myCanvas").mousedown( function(e) {
+    	if(state.nextObject === "text") {
+    		// TODO: make text area appear and create new shape
+    		var text = $("#textinput").val();
+    		var x = e.pageX - this.offsetLeft;
+    		var y = e.pageY - this.offsetTop;
+
+    		state.shapes.push(new Text(text, x, y, state.nextColor));
+    		state.dragging = false;
+    		state.valid = false;
+    		return;
+    	}
+
     	state.dragging = true;
     	state.valid = false;
 
