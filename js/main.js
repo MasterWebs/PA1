@@ -106,7 +106,6 @@ State.prototype.drawAll = function() {
 
 		this.valid = true;
 	}
-	console.log("her");
 }
 
 var state = new State(document.getElementById("myCanvas"));
