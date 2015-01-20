@@ -35,7 +35,7 @@ function Text(text, x, y, font, color) {
 	}
 }
 
-function Circle(x, y, w, color ) {
+function Circle(x, y, w, color) {
 	this.x = x;
 	this.y = y;
 	this.color = color;
@@ -50,18 +50,20 @@ function Circle(x, y, w, color ) {
 	}	
 }
 
-function Line(x0, y0, x1, y1, color) {
+function Line(x0, y0, x1, y1, linewidth, color) {
 	this.x0 = x0;
 	this.y0 = y0;
 	this.x1 = x1;
 	this.y1 = y1;
+	this.linewidth = linewidth;
 	this.color = color;
 
 	this.draw = function() {
 		var context = state.context;
 
 		context.beginPath();
-		context.strokeStyle = color;
+		context.strokeStyle = this.color;
+		context.lineWidth = this.linewidth;
 		context.moveTo(x0, y0);
 		context.lineTo(x1, y1);
 		context.stroke();
@@ -168,10 +170,11 @@ $(document).ready(function() {
 		    	state.shapes.pop();
 		    	state.valid = false;
 
+		    	var linewidth = $("#linewidth").val();
 		    	var currX = e.pageX - this.offsetLeft;
 		    	var currY = e.pageY - this.offsetTop;
 
-		    	state.shapes.push(new Line(startX, startY, currX, currY, state.nextColor));
+		    	state.shapes.push(new Line(startX, startY, currX, currY, linewidth, state.nextColor));
 		    }
 	    }
     });
