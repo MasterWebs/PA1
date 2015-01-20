@@ -133,7 +133,7 @@ $(document).ready(function() {
 		    	var height = Math.abs(startY - currY);
 
 
-		    	state.shapes.push(new Rect(x, y, width, height, state.color));
+		    	state.shapes.push(new Rect(x, y, width, height, state.nextColor));
 		    }
 		    else if(state.nextObject === "circle") {
 		    	state.shapes.pop();
@@ -145,7 +145,7 @@ $(document).ready(function() {
 		    	var width = Math.abs(startX - currX);
 		    	var height = Math.abs(startY - currY);
 
-		    	state.shapes.push(new Circle(startX, startY, width, state.color));
+		    	state.shapes.push(new Circle(startX, startY, width, state.nextColor));
 
 		    }
 	    }
@@ -164,27 +164,13 @@ $(document).ready(function() {
 		var height = Math.abs(startY - endY);
 
     	if(state.nextObject === "rect") {
-			state.shapes.push(new Rect(x, y, width, height));
+			state.shapes.push(new Rect(x, y, width, height, state.nextColor));
     	}
     	else if(state.nextObject === "circle") {
-	    	state.shapes.push(new Circle(x, y, width, height));
+	    	state.shapes.push(new Circle(x, y, width, height, state.nextColor));
     	}
 		
     });
-
-    function calc(e) {
-    	var currX = e.pageX - this.offsetLeft;
-    	var currY = e.pageY - this.offsetTop;
-
-    	var x = (startX < currX) ? startX : currX;
-    	var y = (startY < currY) ? startY : currY;
-
-    	var width = Math.abs(startX - currX);
-    	var height = Math.abs(startY - currY);
-
-    }
-
-
 
     /* $("#myCanvas").mousedown( function(e) {
     	drawing = true;
@@ -218,8 +204,7 @@ $(document).ready(function() {
 
 
 	$("#colorPicker").on('change', function() {
-		color = this.value;
-		state.nextColor = color;
+		state.nextColor = this.value;
 	});
 	
 });
