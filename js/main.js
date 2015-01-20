@@ -254,3 +254,7 @@ $("#text").click(function() {
 $("#pen").click(function() {
 	state.nextObject = "pen";
 });
+
+$("#clear").click(function() {
+	state.context.clearRect(0, 0, state.width, state.height);
+});
