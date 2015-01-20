@@ -117,8 +117,6 @@ $(document).ready(function() {
 
     $("#myCanvas").mousemove( function(e) {
     	if(state.dragging) {
-
-    		
     		if(state.nextObject === "rect") {
 		    	state.shapes.pop();
 		    	state.valid = false;
@@ -167,7 +165,7 @@ $(document).ready(function() {
 			state.shapes.push(new Rect(x, y, width, height, state.nextColor));
     	}
     	else if(state.nextObject === "circle") {
-	    	state.shapes.push(new Circle(x, y, width, height, state.nextColor));
+	    	state.shapes.push(new Circle(x, y, width, state.nextColor));
     	}
 		
     });
