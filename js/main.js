@@ -15,10 +15,25 @@ function Rect(x, y, w, h, color) {
 		var context = state.context;
 
 		context.beginPath();
-		context.fillstyle = color;
+		context.fillStyle = color;
 		context.rect(x, y, w, h);
 		context.fill();
 	}
+}
+
+function Circle(x, y, w, color ) {
+	this.x = x;
+	this.y = y;
+	this.color = color;
+
+	this.draw =function() {
+		var context = state.context;
+
+		context.beginPath();
+		context.fillStyle = color;
+		context.arc(x, y, w/2, 0, 2*Math.PI, false); 
+		context.fill();
+	}	
 }
 
 function State(canvas) {
@@ -74,19 +89,37 @@ $(document).ready(function() {
 
     $("#myCanvas").mousemove( function(e) {
     	if(state.dragging) {
-	    	state.shapes.pop();
-	    	state.valid = false;
 
-	    	var currX = e.pageX - this.offsetLeft;
-	    	var currY = e.pageY - this.offsetTop;
+    		
+    		if(state.nextObject === "rect") {
+		    	state.shapes.pop();
+		    	state.valid = false;
 
-	    	var x = (startX < currX) ? startX : currX;
-	    	var y = (startY < currY) ? startY : currY;
+			    var currX = e.pageX - this.offsetLeft;
+		    	var currY = e.pageY - this.offsetTop;
 
-	    	var width = Math.abs(startX - currX);
-	    	var height = Math.abs(startY - currY);
+		    	var x = (startX < currX) ? startX : currX;
+		    	var y = (startY < currY) ? startY : currY;
 
-	    	state.shapes.push(new Rect(x, y, width, height));
+		    	var width = Math.abs(startX - currX);
+		    	var height = Math.abs(startY - currY);
+
+
+		    	state.shapes.push(new Rect(x, y, width, height, state.color));
+		    }
+		    else if(state.nextObject === "circle") {
+		    	state.shapes.pop();
+		    	state.valid = false;
+
+		    	var currX = e.pageX - this.offsetLeft;
+		    	var currY = e.pageY - this.offsetTop;
+
+		    	var width = Math.abs(startX - currX);
+		    	var height = Math.abs(startY - currY);
+
+		    	state.shapes.push(new Circle(startX, startY, width, state.color));
+
+		    }
 	    }
     });
 
@@ -99,11 +132,29 @@ $(document).ready(function() {
     	var x = (startX < endX) ? startX : endX;
     	var y = (startY < endY) ? startY : endY;
 
-		var width = Math.abs(startX - endX);
+    	var width = Math.abs(startX - endX);
 		var height = Math.abs(startY - endY);
 
-		state.shapes.push(new Rect(x, y, width, height));
+    	if(state.nextObject === "rect") {
+			state.shapes.push(new Rect(x, y, width, height));
+    	}
+    	else if(state.nextObject === "circle") {
+	    	state.shapes.push(new Circle(x, y, width, height));
+    	}
+		
     });
+
+    function calc(e) {
+    	var currX = e.pageX - this.offsetLeft;
+    	var currY = e.pageY - this.offsetTop;
+
+    	var x = (startX < currX) ? startX : currX;
+    	var y = (startY < currY) ? startY : currY;
+
+    	var width = Math.abs(startX - currX);
+    	var height = Math.abs(startY - currY);
+
+    }
 
 
 
@@ -139,15 +190,29 @@ $(document).ready(function() {
 
 
 	$("#colorPicker").on('change', function() {
-		color = this.value; 
-		context.fillStyle = color;
+		color = this.value;
+		state.nextColor = color;
 	});
-
-	$("#rect").click(function() {
-		state.nextObject = "rect";
-	});
-
 	
+});
 
+$("#circle").click(function() {
+	state.nextObject = "circle";
+});
 
+$("#rect").click(function() {
+	state.nextObject = "rect";
+});
+
+$("#line").click(function() {
+	alert("line");
+	state.nextObject = "line";
+});
+
+$("#text").click(function() {
+	state.nextObject = "text";
+});
+
+$("#pen").click(function() {
+	state.nextObject = "pen";
 });
