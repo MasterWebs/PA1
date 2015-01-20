@@ -40,7 +40,7 @@ function Circle(x, y, w, color ) {
 	this.y = y;
 	this.color = color;
 
-	this.draw =function() {
+	this.draw = function() {
 		var context = state.context;
 
 		context.beginPath();
@@ -50,9 +50,28 @@ function Circle(x, y, w, color ) {
 	}	
 }
 
+function Line(x0, y0, x1, y1, color) {
+	this.x0 = x0;
+	this.y0 = y0;
+	this.x1 = x1;
+	this.y1 = y1;
+	this.color = color;
+
+	this.draw = function() {
+		var context = state.context;
+
+		context.beginPath();
+		context.strokeStyle = color;
+		context.moveTo(x0, y0);
+		context.lineTo(x1, y1);
+		context.stroke();
+	}
+}
+
 Text.prototype = new Shape();
 Rect.prototype = new Shape();
 Circle.prototype = new Shape();
+Line.prototype = new Shape();
 
 function State(canvas) {
 	this.canvas = canvas;
@@ -145,6 +164,14 @@ $(document).ready(function() {
 
 		    	state.shapes.push(new Circle(startX, startY, width, state.nextColor));
 
+		    } else if(state.nextObject === "line") {
+		    	state.shapes.pop();
+		    	state.valid = false;
+
+		    	var currX = e.pageX - this.offsetLeft;
+		    	var currY = e.pageY - this.offsetTop;
+
+		    	state.shapes.push(new Line(startX, startY, currX, currY, state.nextColor));
 		    }
 	    }
     });
@@ -155,17 +182,18 @@ $(document).ready(function() {
     	var endX = e.pageX - this.offsetLeft;
     	var endY = e.pageY - this.offsetTop;
 
-    	var x = (startX < endX) ? startX : endX;
-    	var y = (startY < endY) ? startY : endY;
-
     	var width = Math.abs(startX - endX);
 		var height = Math.abs(startY - endY);
 
     	if(state.nextObject === "rect") {
+    		var x = (startX < endX) ? startX : endX;
+    		var y = (startY < endY) ? startY : endY;
 			state.shapes.push(new Rect(x, y, width, height, state.nextColor));
     	}
     	else if(state.nextObject === "circle") {
-	    	state.shapes.push(new Circle(x, y, width, state.nextColor));
+	    	state.shapes.push(new Circle(startX, startY, width, state.nextColor));
+    	} else if(state.nextObject === "line") {
+    		state.shapes.push(new Line(startX, startY, endX, endY, state.nextColor));
     	}
 		
     });
@@ -216,7 +244,6 @@ $("#rect").click(function() {
 });
 
 $("#line").click(function() {
-	alert("line");
 	state.nextObject = "line";
 });
 
