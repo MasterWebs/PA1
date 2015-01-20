@@ -104,6 +104,7 @@ State.prototype.drawAll = function() {
 
 		this.valid = true;
 	}
+	console.log("her");
 }
 
 var state = new State(document.getElementById("myCanvas"));
@@ -257,4 +258,5 @@ $("#pen").click(function() {
 
 $("#clear").click(function() {
 	state.context.clearRect(0, 0, state.width, state.height);
+	state.shapes = [];
 });
