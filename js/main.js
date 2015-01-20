@@ -82,6 +82,7 @@ function State(canvas) {
 	this.height = canvas.height;
 	this.valid = false;
 	this.shapes = [];
+	this.undone = [];
 	this.nextObject = "pen";
 	this.nextColor = "#000000";
 	this.dragging = false;
@@ -236,6 +237,23 @@ $(document).ready(function() {
 		state.nextColor = this.value;
 	});
 	
+});
+
+$("#undo").click(function() {
+	if(state.shapes.length > 0) {
+		var shape = state.shapes.pop();
+		state.undone.push(shape);
+		state.valid = false;
+		console.log(state.shapes.length);
+	}
+});
+
+$("#redo").click(function() {
+	if(state.undone.length > 0) {
+		var shape = state.undone.pop();
+		state.shapes.push(shape);
+		state.valid = false;
+	}
 });
 
 $("#circle").click(function() {
