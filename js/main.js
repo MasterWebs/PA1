@@ -40,7 +40,7 @@ function Rect(x, y, w, h, color, fill) {
 	}
 }
 
-function Text(text, x, y, font, color, size) {
+function Text(text, x, y, color, size, font) {
 	this.x = x;
 	this.y = y;
 	this.color = color;
@@ -179,7 +179,6 @@ function Tools() {
 	this.nextObject = "pen";
 	this.nextColor = "#000000";
 	this.fill = true;
-	//this.textSize = 12;
 }
 
 State.prototype.clear = function() {
@@ -220,9 +219,11 @@ $(document).ready(function() {
     	switch(tools.nextObject) {
     		case "text":
 	    		// TODO: make text area appear and create new shape
-	    		var text = $("#textinput").val();
+	    		var text = $("#textInput").val();
+	    		var size = $("#textSize").val();
+	    		var font = $("#font").val();
 
-	    		state.shapes.push(new Text(text, startX, startY, tools.nextColor, textSize, tools.font));
+	    		state.shapes.push(new Text(text, startX, startY,  tools.nextColor, size, font));
 	    		state.dragging = false;
 	    		state.valid = false;
 	    		return;
