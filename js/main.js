@@ -309,6 +309,10 @@ $("#pen").click(function() {
 	state.nextObject = "pen";
 });
 
+$("#move").click(function() {
+	state.nextObject = "move";
+});
+
 $("#clear").click(function() {
 	state.context.clearRect(0, 0, state.width, state.height);
 	state.shapes = [];
