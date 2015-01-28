@@ -178,6 +178,7 @@ $(document).ready(function() {
     $("#myCanvas").mousedown( function(e) {
     	startX = e.pageX - this.offsetLeft;
     	startY = e.pageY - this.offsetTop;
+    	var linewidth = $("#linewidth").val();
     	switch(state.nextObject) {
     		case "text":
 	    		// TODO: make text area appear and create new shape
@@ -188,7 +189,6 @@ $(document).ready(function() {
 	    		state.valid = false;
 	    		return;
 	    	case "pen":
-	    		var linewidth = $("#linewidth").val();
 	    		state.shapes.push(new Pen(linewidth, state.nextColor));
 	    		break;
 	    	case "rect":
@@ -198,7 +198,7 @@ $(document).ready(function() {
 	    		state.shapes.push(new Circle(startX, startY, 0, state.nextColor));
 	    		break;
 	    	case "line":
-	    		state.shapes.push(new Line(startX, startY, state.nextColor));
+	    		state.shapes.push(new Line(startX, startY, linewidth, state.nextColor));
 	    		break;
     	}
 
