@@ -6,12 +6,13 @@ function Shape() {
 	// prototype class
 }
 
-function Rect(x, y, w, h, color) {
+function Rect(x, y, w, h, color, fill) {
 	this.x = x;
 	this.y = y;
 	this.w = w;
 	this.h = h;
 	this.color = color;
+	this.fill = fill;
 
 	this.edit = function(x, y, w, h) {
 		this.x = x;
@@ -24,31 +25,42 @@ function Rect(x, y, w, h, color) {
 		var context = state.context;
 
 		context.beginPath();
-		context.fillStyle = color;
-		context.rect(this.x, this.y, this.w, this.h);
-		context.fill();
+
+		if(this.fill===true) {
+			context.fillStyle = color;
+			context.rect(this.x, this.y, this.w, this.h);
+			context.fill();
+		}	
+		else{
+			context.strokeStyle = color;
+			context.rect(this.x, this.y, this.w, this.h);
+			context.stroke();
+		}
+		
 	}
 }
 
-function Text(text, x, y, font, color) {
+function Text(text, x, y, font, color, size) {
 	this.x = x;
 	this.y = y;
 	this.color = color;
+	this.size = size;
 
 	this.draw = function() {
 		var context = state.context;
 
-		context.font = font;
+		context.font = size + "px " + font;
 		context.fillStyle = color;
 		context.fillText(text, x, y);
 	}
 }
 
-function Circle(x, y, w, color) {
+function Circle(x, y, w, color, fill) {
 	this.x = x;
 	this.y = y;
 	this.w = w;
 	this.color = color;
+	this.fill = fill;
 
 	this.edit = function(w) {
 		this.w = w;
@@ -58,23 +70,33 @@ function Circle(x, y, w, color) {
 		var context = state.context;
 
 		context.beginPath();
-		context.fillStyle = color;
-		context.arc(this.x, this.y, this.w/2, 0, 2*Math.PI, false); 
-		context.fill();
+		
+
+		if(this.fill === true) {
+			context.fillStyle = color;
+			context.arc(this.x, this.y, this.w/2, 0, 2*Math.PI, false); 
+			context.fill();
+		}
+		else {
+			context.strokeStyle = color;
+			context.arc(this.x, this.y, this.w/2, 0, 2*Math.PI, false);
+			context.stroke();
+		}
+
 	}	
 }
 
-function Point(x, y, linewidth, color) {
+function Point(x, y, lineWidth, color) {
 	this.x = x;
 	this.y = y;
-	this.linewidth = linewidth;
+	this.lineWidth = lineWidth;
 	this.color = color;
 
 	this.draw = function() {
 		var context = state.context;
 
 		context.beginPath();
-		context.lineWidth = this.linewidth;
+		context.lineWidth = this.lineWidth;
 		context.strokeStyle = this.color;
 		context.moveTo(x, y);
 		context.lineTo(x, y);
@@ -83,13 +105,15 @@ function Point(x, y, linewidth, color) {
 	}
 }
 
-function Pen(linewidth, color) {
-	this.linewidth = linewidth;
+function Pen(lineWidth, color) {
+	this.x = x;
+	this.y = y;
+	this.lineWidth = lineWidth;
 	this.color = color;
 	this.points = [];
 
 	this.addPoint = function(x, y) {
-		this.points.push(new Point(x, y, this.linewidth, this.color));
+		this.points.push(new Point(x, y, this.lineWidth, this.color));
 	}
 
 	this.draw = function() {
@@ -100,12 +124,12 @@ function Pen(linewidth, color) {
 	}
 }
 
-function Line(x0, y0, linewidth, color) {
+function Line(x0, y0, lineWidth, color) {
 	this.x0 = x0;
 	this.y0 = y0;
 	this.x1 = x0;
 	this.y1 = y0;
-	this.linewidth = linewidth;
+	this.lineWidth = lineWidth;
 	this.color = color;
 
 	this.edit = function(x1, y1) {
@@ -118,7 +142,7 @@ function Line(x0, y0, linewidth, color) {
 
 		context.beginPath();
 		context.strokeStyle = this.color;
-		context.lineWidth = this.linewidth;
+		context.lineWidth = this.lineWidth;
 		context.moveTo(this.x0, this.y0);
 		context.lineTo(this.x1, this.y1);
 		context.stroke();
@@ -133,6 +157,9 @@ Pen.prototype = new Shape();
 Line.prototype = new Shape();
 Point.prototype = new Shape();
 
+///////////////////////////////////////////////////////////////////////
+
+
 function State(canvas) {
 	this.canvas = canvas;
 	this.context = canvas.getContext("2d");
@@ -141,10 +168,18 @@ function State(canvas) {
 	this.valid = false;
 	this.shapes = [];
 	this.undone = [];
+	//this.nextObject = "pen";
+	//this.nextColor = "#000000";
+	this.dragging = false;
+	//this.fill = true;
+	this.selection = null;
+}
+
+function Tools() {
 	this.nextObject = "pen";
 	this.nextColor = "#000000";
-	this.dragging = false;
-	this.selection = null;
+	this.fill = true;
+	//this.textSize = 12;
 }
 
 State.prototype.clear = function() {
@@ -168,6 +203,7 @@ State.prototype.drawAll = function() {
 }
 
 var state = new State(document.getElementById("myCanvas"));
+var tools = new Tools(document.getElementById("myCanvas"));
 
 $(document).ready(function() {
     var startX = 0;
@@ -178,27 +214,29 @@ $(document).ready(function() {
     $("#myCanvas").mousedown( function(e) {
     	startX = e.pageX - this.offsetLeft;
     	startY = e.pageY - this.offsetTop;
-    	var linewidth = $("#linewidth").val();
-    	switch(state.nextObject) {
+    	var lineWidth = $("#lineWidth").val();
+    	var textSize = $("#textSize").val();
+
+    	switch(tools.nextObject) {
     		case "text":
 	    		// TODO: make text area appear and create new shape
 	    		var text = $("#textinput").val();
 
-	    		state.shapes.push(new Text(text, startX, startY, state.nextColor));
+	    		state.shapes.push(new Text(text, startX, startY, tools.nextColor, textSize, tools.font));
 	    		state.dragging = false;
 	    		state.valid = false;
 	    		return;
 	    	case "pen":
-	    		state.shapes.push(new Pen(linewidth, state.nextColor));
+	    		state.shapes.push(new Pen(lineWidth, tools.nextColor));
 	    		break;
 	    	case "rect":
-	    		state.shapes.push(new Rect(startX, startY, 0, 0, state.nextColor));
+	    		state.shapes.push(new Rect(startX, startY, 0, 0, tools.nextColor, tools.fill));
 	    		break;
 	    	case "circle":
-	    		state.shapes.push(new Circle(startX, startY, 0, state.nextColor));
+	    		state.shapes.push(new Circle(startX, startY, 0, tools.nextColor, tools.fill));
 	    		break;
 	    	case "line":
-	    		state.shapes.push(new Line(startX, startY, linewidth, state.nextColor));
+	    		state.shapes.push(new Line(startX, startY, lineWidth, tools.nextColor));
 	    		break;
     	}
 
@@ -213,12 +251,11 @@ $(document).ready(function() {
     		var currY = e.pageY - this.offsetTop;
     		var len = state.shapes.length;
 
-    		if(state.nextObject === "pen") {
+    		if(tools.nextObject === "pen") {
     			state.valid = false;
-
     			state.shapes[len - 1].addPoint(currX, currY);
     		}
-    		else if(state.nextObject === "rect") {
+    		else if(tools.nextObject === "rect") {
 		    	state.valid = false;
 
 		    	var x = (startX < currX) ? startX : currX;
@@ -229,14 +266,14 @@ $(document).ready(function() {
 
 		    	state.shapes[len - 1].edit(x, y, width, height);
 		    }
-		    else if(state.nextObject === "circle") {
+		    else if(tools.nextObject === "circle") {
 		    	state.valid = false;
 
 		    	var width = Math.abs(startX - currX);
 
 		    	state.shapes[len - 1].edit(width);
 
-		    } else if(state.nextObject === "line") {
+		    } else if(tools.nextObject === "line") {
 		    	state.valid = false;
 
 		    	state.shapes[len - 1].edit(currX, currY);
@@ -268,7 +305,7 @@ $(document).ready(function() {
 
 
 	$("#colorPicker").on('change', function() {
-		state.nextColor = this.value;
+		tools.nextColor = this.value;
 	});
 	
 });
@@ -289,31 +326,20 @@ $("#redo").click(function() {
 	}
 });
 
-$("#circle").click(function() {
-	state.nextObject = "circle";
+$(".tool").click(function(e) {
+	tools.nextObject = $(this).data("tool");
+	$('#objects button').addClass('active').not(this).removeClass('active')
+
 });
 
-$("#rect").click(function() {
-	state.nextObject = "rect";
-});
-
-$("#line").click(function() {
-	state.nextObject = "line";
-});
-
-$("#text").click(function() {
-	state.nextObject = "text";
-});
-
-$("#pen").click(function() {
-	state.nextObject = "pen";
-});
-
-$("#move").click(function() {
-	state.nextObject = "move";
-});
-
-$("#clear").click(function() {
-	state.context.clearRect(0, 0, state.width, state.height);
-	state.shapes = [];
+$("#fill").click(function() {
+	if(tools.fill === true){
+		tools.fill = false;
+		$('#fill').removeClass('active').not('#objects button');
+	}
+	else {
+		tools.fill = true;
+		$('#fill').addClass('active').not('#objects button');
+	}
+			
 });
