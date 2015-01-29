@@ -1,12 +1,12 @@
 body {
     padding-top: 10px;
     font-family:sans-serif;
-    width: 1140px;
+    width: 95%;
     margin: 0 auto;
 }
 
 #container {
-    width:100%;
+    width:90%;
     float: left;
 }
 
