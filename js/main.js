@@ -234,6 +234,7 @@ var tools = new Tools(document.getElementById("myCanvas"));
 
 $(document).ready(function() {
     setInterval(function() {  state.drawAll(); }, 10);
+    $("#dialog").open = false;
 
     $("#myCanvas").mousedown( function(e) {
     	state.startPoint.x = e.pageX - this.offsetLeft;
@@ -296,8 +297,8 @@ $(document).ready(function() {
     });
 
 
-	$("#colorPicker").on('change', function() {
-		tools.nextColor = this.value;
+	$(".colors").click(function(e) {
+		tools.nextColor = $(this).data("tool");
 	});
 	
 });
@@ -335,14 +336,17 @@ $("#fill").click(function() {
 	}
 });
 
-$("#save").click(function() {
-	var stringifiedArray = JSON.stringify(state.shapes);
-	var param = { "user": "omar13", // You should use your own username!
-		"name": "title",
-		"content": stringifiedArray,
-		"template": true
-	};
+$("#saveButton").click(function() {
 
+	var username = $("#username").val();
+	var title = $("#title").val();
+	var stringifiedArray = JSON.stringify(state.shapes);
+	var param = {
+		"user": username,
+		"name": title,
+		"content": stringifiedArray,
+		"template": false
+	};
 	$.ajax({
 		type: "POST",
 		contentType: "application/json; charset=utf-8",
@@ -350,11 +354,35 @@ $("#save").click(function() {
 		data: param,
 		dataType: "jsonp",
 		crossDomain: true,
-		success: function (data) {
-			console.log("save");
-		},
-		error: function (xhr, err) {
-			console.log("not save");
-		}
+	success: function (data) {
+		console.log("success");
+	},
+	error: function (xhr, err) {
+		console.log("error");
+	}
 	});
-})
+});
+
+$("#load").click(function() {
+	var param = {
+		"user": "omar13",
+		"template": false
+	}
+	$.ajax({
+		type: "GET",
+		contentType: "application/json; charset=utf-8",
+		url: "http://whiteboard.apphb.com/Home/GetList",
+		data: param,
+		dataType: "jsonp",
+		crossDomain: true,
+	success:function(data) {
+			for(var i = 0; i < data.length; i++) {
+				console.log(data[i]);
+			}
+	},
+	error: function(xhr, err) {
+		console.log("error");
+	}
+	});
+
+});

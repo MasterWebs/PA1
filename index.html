@@ -10,17 +10,31 @@
         <title>DRAW</title>
     </head>
 
-    <body class="noSelect">
+    <body>
 
         <div id="container">
             <div id="center">
-                <div>
+                <div id="function">
                     <button class="btn btn-primary" id="clear">Clear</button>
                     <button class="btn btn-primary" id="undo">Undo</button>
                     <button class="btn btn-primary" id="redo">Redo</button>
-                    <button class="btn btn-primary" id="save">Save</button>
                     <button class="btn btn-primary" id="load">Load</button>
                 </div>
+
+                    <div id="save">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label class="sr-only" for="username">Username</label>
+                            <input type="email" class="form-control" id="username" placeholder="Enter Username">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="title">Password</label>
+                            <input type="text" class="form-control" id="title" placeholder="Enter Title">
+                        </div>
+                        <button type="button" class="btn btn-default" id="saveButton">Save</button>
+                    </form>
+                </div>
+              
 
 
                 <div id="canvas">
@@ -40,8 +54,12 @@
 
 
             <div id="right">
-                <div class="tool">Color<input type="color" id="colorPicker" class="colorpicker" value ="#000000"></div>
-                <div class="tool"><button type="button" id="fill" class="btn btn-default btn-lg">Fill Shape</button></div>
+                <h2>Colors</h2>
+                <button type="button" id="black" class="colors tool btn btn-default" data-tool="#222"></button>
+                <button type="button" id="red" class="colors tool btn btn-default" data-tool="#d9534f"></button>
+                <button type="button" id="blue" class="colors tool btn btn-default" data-tool="#337ab7"></button>
+                <button type="button" id="green" class="colors tool btn btn-default" data-tool="#5cb85c"></button>
+                <button type="button" id="fill" class="colors tool btn btn-default btn-lg">Fill Shape</button>
 
                 <h2>Text tools</h2>
                 <div class="tool"><input type="text" id="textInput" rows="1" cols="10" placeholder="Text" class="form-control"></textarea></div>
@@ -59,14 +77,14 @@
             </div>
 
         </div>
-
-
     
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="js/bootstrap.min.js"></script>
+        <script src="js/bootbox.min.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
         <script src="js/main.js"></script>
     </body>
 </html>
+
