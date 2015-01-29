@@ -63,6 +63,8 @@ body {
     border-color: #333;
 }
 
-#myCanvas:hover{ 
-    cursor: crosshair; 
+#fill {
+    color: #333;
+    background-color: #00BFFF;
+    border-color: #333;
 }

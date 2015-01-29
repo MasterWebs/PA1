@@ -319,11 +319,11 @@ $(".object").click(function(e) {
 $("#fill").click(function() {
 	if(tools.fill === true){
 		tools.fill = false;
-		$(this).removeClass('active');
+		$('#fill').css("background-color", "#FFFFFF");
 	}
 	else {
 		tools.fill = true;
-		$(this).addClass('active');
+		$('#fill').css("background-color", "#00BFFF");
 	}
 			
 });

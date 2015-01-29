@@ -10,7 +10,7 @@
         <title>DRAW</title>
     </head>
 
-    <body>
+    <body class="noSelect">
 
         <div id="container">
             <div id="center">
@@ -23,6 +23,7 @@
 
                 <div id="canvas">
                     <canvas id="myCanvas" width="900" height="500" style="border:1px solid #000000;">
+                        Your browser is shit</canvas>
                 </div>
 
                 <div id="objects" >
@@ -38,7 +39,7 @@
 
             <div id="right">
                 <div class="tool">Color<input type="color" id="colorPicker" class="colorpicker" value ="#000000"></div>
-                <div class="tool"><button type="button" id="fill" class="tool btn btn-default btn-lg active">Fill Shape</button></div>
+                <div class="tool"><button type="button" id="fill" class="btn btn-default btn-lg">Fill Shape</button></div>
                 <h2>Text tools</h2>
                 <div class="tool"><input type="text" id="textInput" rows="1" cols="10" placeholder="Text"></textarea></div>
                 <div class="tool"><input id="textSize" type="number"  value="12" placeholder="Text Size"></textarea></div>
@@ -50,7 +51,7 @@
                       <option value="Verdana">Verdana</option>
                 </select>
                 <h2>Line tools</h2>
-                <div class="tool"><input id="lineWidth" type="number" value="1" placeholder="Line Width" class="form-control"></input></div></div>
+                <div class="tool"><input id="lineWidth" type="number" value="1" placeholder="Line Width"></input></div></div>
 
             </div>
 
