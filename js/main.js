@@ -34,9 +34,6 @@ function Rect(x, y, color, fill, lineWidth) {
 		var w = Math.abs(this.startPoint.x - this.endPoint.x);
 		var h = Math.abs(this.startPoint.y - this.endPoint.y);
 
-		console.log("startPoint: " + this.startPoint.x + "." + this.startPoint.y);
-		console.log("endPoint: " + this.endPoint.x + "." + this.endPoint.y);
-
 		context.beginPath();
 
 		if(this.fill === true) {
@@ -53,7 +50,15 @@ function Rect(x, y, color, fill, lineWidth) {
 	}
 
 	this.isAt = function(x, y) {
-		
+		var context = state.context;
+		var w = Math.abs(this.startPoint.x - this.endPoint.x);
+		var h = Math.abs(this.startPoint.y - this.endPoint.y);
+
+		context.beginPath();
+		context.rect(this.startPoint.x, this.startPoint.y, w, h);
+		var contains = context.isPointInPath(x, y);
+		context.closePath();
+		return contains;
 	}
 }
 
@@ -81,15 +86,14 @@ function Circle(x, y, w, color, fill, lineWidth) {
 	this.fill = fill;
 	this.lineWidth = lineWidth;
 
-	this.edit = function(w) {
-		this.w = w;
+	this.edit = function(x, y) {
+		this.w = Math.abs(this.x - x);
 	}
 
 	this.draw = function() {
 		var context = state.context;
 
 		context.beginPath();
-		
 
 		if(this.fill === true) {
 			context.fillStyle = this.color;
@@ -102,7 +106,16 @@ function Circle(x, y, w, color, fill, lineWidth) {
 			context.arc(this.x, this.y, this.w/2, 0, 2*Math.PI, false);
 			context.stroke();
 		}
+	}
 
+	this.isAt = function(x, y) {
+		var context = state.context;
+		
+		context.beginPath();
+		context.arc(this.x, this.y, this.w/2, 0, 2*Math.PI, false);
+		var contains = context.isPointInPath(x, y);
+		context.closePath();
+		return contains;
 	}	
 }
 
@@ -225,7 +238,6 @@ $(document).ready(function() {
     $("#myCanvas").mousedown( function(e) {
     	state.startPoint.x = e.pageX - this.offsetLeft;
     	state.startPoint.y = e.pageY - this.offsetTop;
-    	console.log("startPoint: " + state.startPoint.x + "." + state.startPoint.y);
     	var lineWidth = $("#lineWidth").val();
 
     	switch(tools.nextObject) {
@@ -240,7 +252,9 @@ $(document).ready(function() {
 	    		state.valid = false;
 	    		return;
 	    	case "pen":
-	    		state.shapes.push(new Pen(lineWidth, tools.nextColor));
+	    		var pen = new Pen(lineWidth, tools.nextColor);
+	    		pen.edit(state.startPoint.x, state.startPoint.y);
+	    		state.shapes.push(pen);
 	    		break;
 	    	case "rect":
 	    		state.shapes.push(new Rect(state.startPoint.x, state.startPoint.y, tools.nextColor, tools.fill, lineWidth));
@@ -251,6 +265,14 @@ $(document).ready(function() {
 	    	case "line":
 	    		state.shapes.push(new Line(state.startPoint.x, state.startPoint.y, lineWidth, tools.nextColor));
 	    		break;
+	    	case "move":
+	    		for(var i = 0; i < state.shapes.length; i++) {
+	    			if(state.shapes[i].isAt(state.startPoint.x, state.startPoint.y)) {
+	    				console.log("hit");
+	    			} else {
+	    				console.log("miss");
+	    			}
+	    		}
     	}
 
     	state.undone = []; //empty undone array
@@ -259,40 +281,13 @@ $(document).ready(function() {
     });
 
     $("#myCanvas").mousemove( function(e) {
-    	if(state.dragging) {
+    	if(state.dragging && tools.nextObject != "move" && tools.nextObject != "text") {
     		var currX = e.pageX - this.offsetLeft;
     		var currY = e.pageY - this.offsetTop;
     		var len = state.shapes.length;
 
-    		switch(tools.nextObject) {
-    			case "pen":
-    				state.valid = false;
-    				state.shapes[len - 1].edit(currX, currY);
-    				break;
-    			case "rect":
-    				state.valid = false;
-
-			    	/* var x = (startX < currX) ? startX : currX;
-			    	var y = (startY < currY) ? startY : currY;
-
-			    	var width = Math.abs(startX - currX);
-			    	var height = Math.abs(startY - currY); */
-
-			    	state.shapes[len - 1].edit(currX, currY);
-			    	break;
-			    case "circle":
-			    	state.valid = false;
-
-			    	var width = Math.abs(startX - currX);
-
-			    	state.shapes[len - 1].edit(width);
-			    	break;
-			    case "line":
-			    	state.valid = false;
-
-		    		state.shapes[len - 1].edit(currX, currY);
-		    		break;
-    		}
+    		state.valid = false;
+    		state.shapes[len - 1].edit(currX, currY);
 	    }
     });
 
