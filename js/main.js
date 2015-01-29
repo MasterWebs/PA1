@@ -65,13 +65,14 @@ function Rect(x, y, color, fill, lineWidth) {
 		var w = Math.abs(this.startPoint.x - this.endPoint.x);
 		var h = Math.abs(this.startPoint.y - this.endPoint.y);
 
-		state.offsetDrag.x = x - this.startPoint.x;
-		state.offsetDrag.y = y - this.startPoint.y;
-
 		context.beginPath();
 		context.rect(this.startPoint.x, this.startPoint.y, w, h);
 		var contains = context.isPointInPath(x, y);
 		context.closePath();
+		if(contains === true) {
+			state.offsetDrag.x = x - this.startPoint.x;
+			state.offsetDrag.y = y - this.startPoint.y;
+		}
 		return contains;
 	}
 }
@@ -133,8 +134,20 @@ function Circle(x, y, w, color, fill, lineWidth) {
 		context.arc(this.point.x, this.point.y, this.w, 0, 2*Math.PI, false);
 		var contains = context.isPointInPath(x, y);
 		context.closePath();
+		if(contains === true) {
+			state.offsetDrag.x = x - this.point.x;
+			state.offsetDrag.y = y - this.point.y;
+		}
 		return contains;
-	}	
+	}
+
+	this.move = function(x, y) {
+		var xDif = this.point.x - (x - state.offsetDrag.x);
+		var yDif = this.point.y - (y - state.offsetDrag.y);
+
+		this.point.x -= xDif;
+		this.point.y -= yDif;
+	}
 }
 
 function Point(x, y) {
@@ -211,7 +224,22 @@ function Line(x, y, lineWidth, color) {
 		context.rect(start.x, start.y, w, h);
 		var contains = context.isPointInPath(x, y);
 		context.closePath();
+		if(contains === true) {
+			state.offsetDrag.x = x - this.startPoint.x;
+			state.offsetDrag.y = y - this.startPoint.y;
+		}
 		return contains;
+	}
+
+	this.move = function(x, y) {
+		var xDif = this.startPoint.x - (x - state.offsetDrag.x);
+		var yDif = this.startPoint.y - (y - state.offsetDrag.y);
+
+		this.startPoint.x -= xDif;
+		this.startPoint.y -= yDif;
+
+		this.endPoint.x -= xDif;
+		this.endPoint.y -= yDif;
 	}
 }
 
@@ -265,6 +293,11 @@ State.prototype.drawAll = function() {
 	}
 }
 
+// method to move items in array
+Array.prototype.move = function(from, to) {
+    this.splice(to, 0, this.splice(from, 1)[0]);
+};
+
 var state = new State(document.getElementById("myCanvas"));
 var tools = new Tools(document.getElementById("myCanvas"));
 
@@ -302,10 +335,10 @@ $(document).ready(function() {
 	    		state.shapes.push(new Line(state.startPoint.x, state.startPoint.y, lineWidth, tools.nextColor));
 	    		break;
 	    	case "move":
-	    		for(var i = 0; i < state.shapes.length; i++) {
+	    		for(var i = state.shapes.length - 1; i >= 0; i--) {
 	    			if(state.shapes[i].isAt(state.startPoint.x, state.startPoint.y)) {
-	    				console.log("hit");
 	    				state.selected = i;
+	    				state.shapes.move(i, state.shapes.length - 1);
 	    				break;
 	    			}
 
@@ -330,7 +363,7 @@ $(document).ready(function() {
 	    	if(tools.nextObject === "move") {
 	    		if(state.selected != -1) {
 	    			// we only move an object if we have found one
-	    			state.shapes[state.selected].move(currX, currY);
+	    			state.shapes[state.shapes.length - 1].move(currX, currY);
 	    			state.valid = false;
 	    		}
 	    	} else if(tools.nextObject != "text") {
