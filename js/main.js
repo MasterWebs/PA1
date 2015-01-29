@@ -89,12 +89,9 @@ function Text(text, x, y, color, size, font) {
 
 		context.font = size + "px " + this.font;
 		context.fillStyle = this.color;
-		context.fillText(this.text, this.x, this.y);
+		context.fillText(this.text, this.point.x, this.point.y);
 	}
 
-	this.isAt = function() {
-
-	}
 }
 
 function Circle(x, y, w, color, fill, lineWidth) {
