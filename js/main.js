@@ -49,10 +49,24 @@ function Rect(x, y, color, fill, lineWidth) {
 		}
 	}
 
+	this.move = function(x, y) {
+		var xDif = this.startPoint.x - (x - state.offsetDrag.x);
+		var yDif = this.startPoint.y - (y - state.offsetDrag.y);
+
+		this.startPoint.x -= xDif;
+		this.startPoint.y -= yDif;
+
+		this.endPoint.x -= xDif;
+		this.endPoint.y -= yDif;
+	}
+
 	this.isAt = function(x, y) {
 		var context = state.context;
 		var w = Math.abs(this.startPoint.x - this.endPoint.x);
 		var h = Math.abs(this.startPoint.y - this.endPoint.y);
+
+		state.offsetDrag.x = x - this.startPoint.x;
+		state.offsetDrag.y = y - this.startPoint.y;
 
 		context.beginPath();
 		context.rect(this.startPoint.x, this.startPoint.y, w, h);
@@ -63,31 +77,35 @@ function Rect(x, y, color, fill, lineWidth) {
 }
 
 function Text(text, x, y, color, size, font) {
-	this.x = x;
-	this.y = y;
+	this.point = new Point(x, y);
 	this.color = color;
 	this.size = size;
+	this.font = font;
 	this.text = text;
 
 	this.draw = function() {
 		var context = state.context;
 
-		context.font = size + "px " + font;
+		context.font = size + "px " + this.font;
 		context.fillStyle = this.color;
 		context.fillText(this.text, this.x, this.y);
+	}
+
+	this.isAt = function() {
+
 	}
 }
 
 function Circle(x, y, w, color, fill, lineWidth) {
-	this.x = x;
-	this.y = y;
+	this.point = new Point(x, y);
 	this.w = w;
 	this.color = color;
 	this.fill = fill;
 	this.lineWidth = lineWidth;
 
 	this.edit = function(x, y) {
-		this.w = Math.abs(this.x - x);
+		this.w = Math.max(Math.abs(this.point.x - x),
+						  Math.abs(this.point.y - y));
 	}
 
 	this.draw = function() {
@@ -97,13 +115,13 @@ function Circle(x, y, w, color, fill, lineWidth) {
 
 		if(this.fill === true) {
 			context.fillStyle = this.color;
-			context.arc(this.x, this.y, this.w/2, 0, 2*Math.PI, false); 
+			context.arc(this.point.x, this.point.y, this.w, 0, 2*Math.PI, false); 
 			context.fill();
 		}
 		else {
 			context.strokeStyle = this.color;
 			context.lineWidth = this.lineWidth;
-			context.arc(this.x, this.y, this.w/2, 0, 2*Math.PI, false);
+			context.arc(this.point.x, this.point.y, this.w, 0, 2*Math.PI, false);
 			context.stroke();
 		}
 	}
@@ -112,7 +130,7 @@ function Circle(x, y, w, color, fill, lineWidth) {
 		var context = state.context;
 		
 		context.beginPath();
-		context.arc(this.x, this.y, this.w/2, 0, 2*Math.PI, false);
+		context.arc(this.point.x, this.point.y, this.w, 0, 2*Math.PI, false);
 		var contains = context.isPointInPath(x, y);
 		context.closePath();
 		return contains;
@@ -152,17 +170,15 @@ function Pen(lineWidth, color) {
 	}
 }
 
-function Line(x0, y0, lineWidth, color) {
-	this.x0 = x0;
-	this.y0 = y0;
-	this.x1 = x0;
-	this.y1 = y0;
+function Line(x, y, lineWidth, color) {
+	this.startPoint = new Point(x, y);
+	this.endPoint = new Point(x, y);
 	this.lineWidth = lineWidth;
 	this.color = color;
 
-	this.edit = function(x1, y1) {
-		this.x1 = x1;
-		this.y1 = y1;
+	this.edit = function(x, y) {
+		this.endPoint.x = x;
+		this.endPoint.y = y;
 	}
 
 	this.draw = function() {
@@ -171,9 +187,31 @@ function Line(x0, y0, lineWidth, color) {
 		context.beginPath();
 		context.strokeStyle = this.color;
 		context.lineWidth = this.lineWidth;
-		context.moveTo(this.x0, this.y0);
-		context.lineTo(this.x1, this.y1);
+		context.moveTo(this.startPoint.x, this.startPoint.y);
+		context.lineTo(this.endPoint.x, this.endPoint.y);
 		context.stroke();
+	}
+
+	this.isAt = function(x, y) {
+		var context = state.context;
+		var w = Math.abs(this.startPoint.x - this.endPoint.x);
+		var h = Math.abs(this.startPoint.y - this.endPoint.y);
+		var start = new Point(Math.min(this.startPoint.x, this.endPoint.x),
+							  Math.min(this.startPoint.y, this.endPoint.y));
+
+		if(w === 0) {
+			// if the line is vertical
+			w = 2;
+		} else if(h === 0) {
+			// if the line is horizontal
+			h = 2;
+		}
+
+		context.beginPath();
+		context.rect(start.x, start.y, w, h);
+		var contains = context.isPointInPath(x, y);
+		context.closePath();
+		return contains;
 	}
 }
 
@@ -195,12 +233,10 @@ function State(canvas) {
 	this.valid = false;
 	this.shapes = [];
 	this.undone = [];
-	//this.nextObject = "pen";
-	//this.nextColor = "#000000";
 	this.dragging = false;
-	//this.fill = true;
-	this.selection = null;
-	this.startPoint = new Point(0, 0);
+	this.selected = 0;		// index of item selected when moving
+	this.startPoint = new Point(0, 0); // to keep track of starting point (mousedown)
+	this.offsetDrag = new Point(0, 0); // store the offset from the top left corner
 }
 
 function Tools() {
@@ -269,11 +305,17 @@ $(document).ready(function() {
 	    		for(var i = 0; i < state.shapes.length; i++) {
 	    			if(state.shapes[i].isAt(state.startPoint.x, state.startPoint.y)) {
 	    				console.log("hit");
-	    			} else {
-	    				console.log("miss");
+	    				state.selected = i;
+	    				break;
 	    			}
-	    		}
-    	}
+
+	    			if(i === state.shapes.length - 1) {
+	    				// if we haven't found anything at current point
+	    				state.selected = -1;
+	    			}
+    			}
+    			break;
+    		}
 
     	state.undone = []; //empty undone array
     	state.dragging = true;
@@ -281,14 +323,23 @@ $(document).ready(function() {
     });
 
     $("#myCanvas").mousemove( function(e) {
-    	if(state.dragging && tools.nextObject != "move" && tools.nextObject != "text") {
-    		var currX = e.pageX - this.offsetLeft;
-    		var currY = e.pageY - this.offsetTop;
-    		var len = state.shapes.length;
+    	if(state.dragging === true) {
+	    	var currX = e.pageX - this.offsetLeft;
+	    	var currY = e.pageY - this.offsetTop;
 
-    		state.valid = false;
-    		state.shapes[len - 1].edit(currX, currY);
-	    }
+	    	if(tools.nextObject === "move") {
+	    		if(state.selected != -1) {
+	    			// we only move an object if we have found one
+	    			state.shapes[state.selected].move(currX, currY);
+	    			state.valid = false;
+	    		}
+	    	} else if(tools.nextObject != "text") {
+	    		var len = state.shapes.length;
+
+	    		state.shapes[len - 1].edit(currX, currY);
+	    		state.valid = false;
+		    }
+		}
     });
 
     $("#myCanvas").mouseup( function(e) {
