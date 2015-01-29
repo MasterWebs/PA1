@@ -1,7 +1,3 @@
-/**
- * Created by Omar on 16.1.2015.
- */
-
 function Shape() {
 	// prototype class
 }
@@ -27,7 +23,7 @@ function Rect(x, y, w, h, color, fill, lineWidth) {
 
 		context.beginPath();
 
-		if(this.fill === true) {
+		if(this.fill===true) {
 			context.fillStyle = this.color;
 			context.rect(this.x, this.y, this.w, this.h);
 			context.fill();
@@ -91,36 +87,41 @@ function Circle(x, y, w, color, fill, lineWidth) {
 	}	
 }
 
-function Point(x, y) {
+function Point(x, y, lineWidth, color) {
 	this.x = x;
 	this.y = y;
+	this.lineWidth = lineWidth;
+	this.color = color;
+
+	this.draw = function() {
+		var context = state.context;
+
+		context.beginPath();
+		context.lineWidth = this.lineWidth;
+		context.strokeStyle = this.color;
+		context.moveTo(this.x, this.y);
+		context.lineTo(this.x, this.y);
+		context.stroke();
+		console.log("drawing point");
+	}
 }
 
 function Pen(lineWidth, color) {
+	this.x = x;
+	this.y = y;
 	this.lineWidth = lineWidth;
 	this.color = color;
 	this.points = [];
 
-	// adds new point at x,y
-	this.edit = function(x, y) {
-		this.points.push(new Point(x, y));
+	this.addPoint = function(x, y) {
+		this.points.push(new Point(x, y, this.lineWidth, this.color));
 	}
 
 	this.draw = function() {
-		if(this.points.length > 0) {
-			var context = state.context;
-			var points = this.points;
-
-			context.beginPath();
-			context.lineWidth = this.lineWidth;
-			context.strokeStyle = this.color;
-			context.moveTo(points[0].x, points[0].y);
-			for(var i = 1; i < points.length; i++) {
-				context.lineTo(points[i].x, points[i].y);
-				context.moveTo(points[i].x, points[i].y);
-			}
-			context.stroke();
-		} 
+		for(var i = 0; i < this.points.length; i++) {
+			this.points[i].draw();
+			console.log("idunno, drawing i guess");
+		}
 	}
 }
 
@@ -157,8 +158,7 @@ Pen.prototype = new Shape();
 Line.prototype = new Shape();
 Point.prototype = new Shape();
 
-///////////////////////////////////////////////////////////////////////
-
+///////////////////////////////////////////////////////////
 
 function State(canvas) {
 	this.canvas = canvas;
@@ -208,7 +208,7 @@ $(document).ready(function() {
     var startX = 0;
     var startY = 0;
 
-    setInterval(function() {  state.drawAll(); }, 10);
+    setInterval(function() {  state.drawAll(); }, 30);
 
     $("#myCanvas").mousedown( function(e) {
     	startX = e.pageX - this.offsetLeft;
@@ -254,7 +254,7 @@ $(document).ready(function() {
     		switch(tools.nextObject) {
     			case "pen":
     				state.valid = false;
-    				state.shapes[len - 1].edit(currX, currY);
+    				state.shapes[len - 1].addPoint(currX, currY);
     				break;
     			case "rect":
     				state.valid = false;
@@ -310,7 +310,7 @@ $("#redo").click(function() {
 	}
 });
 
-$(".object").click(function(e) {
+$(".tool").click(function(e) {
 	tools.nextObject = $(this).data("tool");
 	$('#objects button').addClass('active').not(this).removeClass('active')
 
@@ -319,11 +319,11 @@ $(".object").click(function(e) {
 $("#fill").click(function() {
 	if(tools.fill === true){
 		tools.fill = false;
-		$('#right button').removeClass('active');
+		$('#fill').removeClass('active').not('#objects button');
 	}
 	else {
 		tools.fill = true;
-		$('#right button').addClass('active');
+		$('#fill').addClass('active').not('#objects button');
 	}
 			
 });
