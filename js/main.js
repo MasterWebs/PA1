@@ -327,7 +327,7 @@ $("#redo").click(function() {
 	}
 });
 
-$(".tool").click(function(e) {
+$(".object").click(function(e) {
 	tools.nextObject = $(this).data("tool");
 	$('#objects button').addClass('active').not(this).removeClass('active')
 
@@ -336,11 +336,11 @@ $(".tool").click(function(e) {
 $("#fill").click(function() {
 	if(tools.fill === true){
 		tools.fill = false;
-		$('#fill').removeClass('active').not('#objects button');
+		$('#right button').removeClass('active');
 	}
 	else {
 		tools.fill = true;
-		$('#fill').addClass('active').not('#objects button');
+		$('#right button').addClass('active');
 	}
 			
 });

@@ -27,7 +27,7 @@ body {
     /*background: #0000ff;*/
 }
 
-#tool {
+.tool {
     margin-top: 20px;
     margin-bottom: 5px;
 }
