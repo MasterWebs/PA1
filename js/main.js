@@ -338,5 +338,28 @@ $("#fill").click(function() {
 		tools.fill = true;
 		$('#fill').css("background-color", "#00BFFF");
 	}
-			
 });
+
+$("#save").click(function() {
+	var stringifiedArray = JSON.stringify(state.shapes);
+	var param = { "user": "omar13", // You should use your own username!
+		"name": "title",
+		"content": stringifiedArray,
+		"template": true
+	};
+
+	$.ajax({
+		type: "POST",
+		contentType: "application/json; charset=utf-8",
+		url: "http://whiteboard.apphb.com/Home/Save",
+		data: param,
+		dataType: "jsonp",
+		crossDomain: true,
+		success: function (data) {
+			console.log("save");
+		},
+		error: function (xhr, err) {
+			console.log("not save");
+		}
+	});
+})

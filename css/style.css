@@ -15,7 +15,6 @@ body {
     margin:0 auto;
     width:910px;
     height: 620px;
-    /*background: #00ff00;*/
 }
 
 #right {
@@ -24,7 +23,6 @@ body {
     float:right;
     width:225px;
     height: 520px;
-    /*background: #0000ff;*/
 }
 
 .tool {
