@@ -6,38 +6,53 @@ function Shape() {
 	// prototype class
 }
 
-function Rect(x, y, w, h, color, fill, lineWidth) {
-	this.x = x;
-	this.y = y;
-	this.w = w;
-	this.h = h;
+function Rect(x, y, color, fill, lineWidth) {
+	this.startPoint = new Point(x, y);
+	this.endPoint = new Point(x, y);
 	this.color = color;
 	this.fill = fill;
 	this.lineWidth = lineWidth;
 
-	this.edit = function(x, y, w, h) {
-		this.x = x;
-		this.y = y;
-		this.w = w;
-		this.h = h;
+	this.edit = function(x, y) {
+		if(state.startPoint.x < x) {
+			this.endPoint.x = x;
+		} else {
+			this.endPoint.x = state.startPoint.x;
+			this.startPoint.x = x;
+		}
+
+		if(state.startPoint.y < y) {
+			this.endPoint.y = y;
+		} else {
+			this.endPoint.y = state.startPoint.y;
+			this.startPoint.y = y;
+		}
 	}
 
 	this.draw = function() {
 		var context = state.context;
+		var w = Math.abs(this.startPoint.x - this.endPoint.x);
+		var h = Math.abs(this.startPoint.y - this.endPoint.y);
+
+		console.log("startPoint: " + this.startPoint.x + "." + this.startPoint.y);
+		console.log("endPoint: " + this.endPoint.x + "." + this.endPoint.y);
 
 		context.beginPath();
 
 		if(this.fill === true) {
 			context.fillStyle = this.color;
-			context.rect(this.x, this.y, this.w, this.h);
+			context.rect(this.startPoint.x, this.startPoint.y, w, h);
 			context.fill();
 		}	
 		else{
 			context.strokeStyle = this.color;
 			context.lineWidth = this.lineWidth;
-			context.rect(this.x, this.y, this.w, this.h);
+			context.rect(this.startPoint.x, this.startPoint.y, w, h);
 			context.stroke();
 		}
+	}
+
+	this.isAt = function(x, y) {
 		
 	}
 }
@@ -155,7 +170,6 @@ Rect.prototype = new Shape();
 Circle.prototype = new Shape();
 Pen.prototype = new Shape();
 Line.prototype = new Shape();
-Point.prototype = new Shape();
 
 ///////////////////////////////////////////////////////////////////////
 
@@ -173,6 +187,7 @@ function State(canvas) {
 	this.dragging = false;
 	//this.fill = true;
 	this.selection = null;
+	this.startPoint = new Point(0, 0);
 }
 
 function Tools() {
@@ -205,14 +220,12 @@ var state = new State(document.getElementById("myCanvas"));
 var tools = new Tools(document.getElementById("myCanvas"));
 
 $(document).ready(function() {
-    var startX = 0;
-    var startY = 0;
-
     setInterval(function() {  state.drawAll(); }, 10);
 
     $("#myCanvas").mousedown( function(e) {
-    	startX = e.pageX - this.offsetLeft;
-    	startY = e.pageY - this.offsetTop;
+    	state.startPoint.x = e.pageX - this.offsetLeft;
+    	state.startPoint.y = e.pageY - this.offsetTop;
+    	console.log("startPoint: " + state.startPoint.x + "." + state.startPoint.y);
     	var lineWidth = $("#lineWidth").val();
 
     	switch(tools.nextObject) {
@@ -222,7 +235,7 @@ $(document).ready(function() {
 	    		var size = $("#textSize").val();
 	    		var font = $("#font").val();
 
-	    		state.shapes.push(new Text(text, startX, startY,  tools.nextColor, size, font));
+	    		state.shapes.push(new Text(text, state.startPoint.x, state.startPoint.y, tools.nextColor, size, font));
 	    		state.dragging = false;
 	    		state.valid = false;
 	    		return;
@@ -230,13 +243,13 @@ $(document).ready(function() {
 	    		state.shapes.push(new Pen(lineWidth, tools.nextColor));
 	    		break;
 	    	case "rect":
-	    		state.shapes.push(new Rect(startX, startY, 0, 0, tools.nextColor, tools.fill, lineWidth));
+	    		state.shapes.push(new Rect(state.startPoint.x, state.startPoint.y, tools.nextColor, tools.fill, lineWidth));
 	    		break;
 	    	case "circle":
-	    		state.shapes.push(new Circle(startX, startY, 0, tools.nextColor, tools.fill, lineWidth));
+	    		state.shapes.push(new Circle(state.startPoint.x, state.startPoint.y, 0, tools.nextColor, tools.fill, lineWidth));
 	    		break;
 	    	case "line":
-	    		state.shapes.push(new Line(startX, startY, lineWidth, tools.nextColor));
+	    		state.shapes.push(new Line(state.startPoint.x, state.startPoint.y, lineWidth, tools.nextColor));
 	    		break;
     	}
 
@@ -259,13 +272,13 @@ $(document).ready(function() {
     			case "rect":
     				state.valid = false;
 
-			    	var x = (startX < currX) ? startX : currX;
+			    	/* var x = (startX < currX) ? startX : currX;
 			    	var y = (startY < currY) ? startY : currY;
 
 			    	var width = Math.abs(startX - currX);
-			    	var height = Math.abs(startY - currY);
+			    	var height = Math.abs(startY - currY); */
 
-			    	state.shapes[len - 1].edit(x, y, width, height);
+			    	state.shapes[len - 1].edit(currX, currY);
 			    	break;
 			    case "circle":
 			    	state.valid = false;
