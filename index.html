@@ -10,7 +10,7 @@
         <title>DRAW</title>
     </head>
 
-    <body>
+    <body class="noSelect">
 
         <div id="container">
             <div id="center">
@@ -18,11 +18,14 @@
                     <button class="btn btn-primary" id="clear">Clear</button>
                     <button class="btn btn-primary" id="undo">Undo</button>
                     <button class="btn btn-primary" id="redo">Redo</button>
+                    <button class="btn btn-primary" id="save">Save</button>
+                    <button class="btn btn-primary" id="load">Load</button>
                 </div>
 
 
                 <div id="canvas">
                     <canvas id="myCanvas" width="900" height="500" style="border:1px solid #000000;">
+                        Your browser is shit</canvas>
                 </div>
 
                 <div id="objects" >
@@ -38,11 +41,12 @@
 
             <div id="right">
                 <div class="tool">Color<input type="color" id="colorPicker" class="colorpicker" value ="#000000"></div>
-                <div class="tool"><button type="button" id="fill" class="tool btn btn-default btn-lg active">Fill Shape</button></div>
+                <div class="tool"><button type="button" id="fill" class="btn btn-default btn-lg">Fill Shape</button></div>
+
                 <h2>Text tools</h2>
-                <div class="tool"><input type="text" id="textInput" rows="1" cols="10" placeholder="Text"></textarea></div>
-                <div class="tool"><input id="textSize" type="number"  value="12" placeholder="Text Size"></textarea></div>
-                <select class ="tool" id="font">
+                <div class="tool"><input type="text" id="textInput" rows="1" cols="10" placeholder="Text" class="form-control"></textarea></div>
+                <div class="tool"><input id="textSize" type="number"  value="12" placeholder="Text Size" class="form-control"></textarea></div>
+                <select class ="tool form-control" id="font">
                       <option value="Arial">Arial</option>  
                       <option value="Comic Sans MS">Comic Sans</option>
                       <option value="Courier New">Courier New</option>
