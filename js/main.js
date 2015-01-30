@@ -156,6 +156,7 @@ function Pen(lineWidth, color) {
 	this.lineWidth = lineWidth;
 	this.color = color;
 	this.points = [];
+	this.selectedPoint = new Point(0, 0);
 
 	// adds new point at x,y
 	this.edit = function(x, y) {
@@ -177,6 +178,50 @@ function Pen(lineWidth, color) {
 			}
 			context.stroke();
 		} 
+	}
+
+	this.isAt = function(x, y) {
+		var highestX = -1;
+		var lowestX = 999999999;
+		var highestY = -1;
+		var lowestY = 999999999;
+		var context = state.context;
+
+		for(var i = 0; i < this.points.length; i++) {
+			highestX = Math.max(this.points[i].x, highestX);
+			lowestX = Math.min(this.points[i].x, lowestX);
+			highestY = Math.max(this.points[i].y, highestX);
+			lowestY = Math.min(this.points[i].y, lowestY);
+		}
+
+		console.log(x + "-" + y);
+
+		var w = Math.abs(highestX - lowestX);
+		var h = Math.abs(highestY - lowestY);
+
+		context.beginPath();
+		context.rect(lowestX, lowestY, w, h);
+		var contains = context.isPointInPath(x, y);
+		context.stroke();
+		context.closePath();
+		if(contains === true) {
+			this.selectedPoint.x = x;
+			this.selectedPoint.y = y;
+		}
+		return contains;
+	}
+
+	this.move = function(x, y) {
+		var xDif = this.selectedPoint.x - x;
+		var yDif = this.selectedPoint.y - y;
+
+		this.selectedPoint.x -= xDif;
+		this.selectedPoint.y -= yDif;
+
+		for(var i = 0; i < this.points.length; i++) {
+			this.points[i].x -= xDif;
+			this.points[i].y -= yDif;
+		}
 	}
 }
 
