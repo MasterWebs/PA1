@@ -6,10 +6,11 @@ function Shape() {
 	// prototype class
 }
 
-function Rect(x, y, color, fill, lineWidth) {
+function Rect(x, y, color, strokeColor, fill, lineWidth) {
 	this.startPoint = new Point(x, y);
 	this.endPoint = new Point(x, y);
 	this.color = color;
+	this.strokeColor = strokeColor;
 	this.fill = fill;
 	this.lineWidth = lineWidth;
 
@@ -38,8 +39,10 @@ function Rect(x, y, color, fill, lineWidth) {
 
 		if(this.fill === true) {
 			context.fillStyle = this.color;
+			context.strokeStyle = this.strokeColor;
 			context.rect(this.startPoint.x, this.startPoint.y, w, h);
 			context.fill();
+			context.stroke();
 		}	
 		else{
 			context.strokeStyle = this.color;
@@ -77,9 +80,10 @@ function Rect(x, y, color, fill, lineWidth) {
 	}
 }
 
-function Text(text, x, y, color, size, font) {
+function Text(text, x, y, color, strokeColor, size, font) {
 	this.point = new Point(x, y);
 	this.color = color;
+	this.strokeColor = strokeColor;
 	this.size = size;
 	this.font = font;
 	this.text = text;
@@ -89,15 +93,18 @@ function Text(text, x, y, color, size, font) {
 
 		context.font = size + "px " + this.font;
 		context.fillStyle = this.color;
+		context.strokeStyle = this.strokeColor;
 		context.fillText(this.text, this.point.x, this.point.y);
+		context.strokeText(this.text, this.point.x, this.point.y);
 	}
 
 }
 
-function Circle(x, y, w, color, fill, lineWidth) {
+function Circle(x, y, w, color, strokeColor, fill, lineWidth) {
 	this.point = new Point(x, y);
 	this.w = w;
 	this.color = color;
+	this.strokeColor = strokeColor;
 	this.fill = fill;
 	this.lineWidth = lineWidth;
 
@@ -113,11 +120,13 @@ function Circle(x, y, w, color, fill, lineWidth) {
 
 		if(this.fill === true) {
 			context.fillStyle = this.color;
+			context.strokeStyle = this.strokeColor;
 			context.arc(this.point.x, this.point.y, this.w, 0, 2*Math.PI, false); 
 			context.fill();
+			context.stroke();
 		}
 		else {
-			context.strokeStyle = this.color;
+			context.strokeStyle = this.strokeColor;
 			context.lineWidth = this.lineWidth;
 			context.arc(this.point.x, this.point.y, this.w, 0, 2*Math.PI, false);
 			context.stroke();
@@ -225,11 +234,12 @@ function Pen(lineWidth, color) {
 	}
 }
 
-function Line(x, y, lineWidth, color) {
+function Line(x, y, lineWidth, color, strokeColor) {
 	this.startPoint = new Point(x, y);
 	this.endPoint = new Point(x, y);
 	this.lineWidth = lineWidth;
 	this.color = color;
+	this.strokeColor = strokeColor;
 
 	this.edit = function(x, y) {
 		this.endPoint.x = x;
@@ -240,10 +250,12 @@ function Line(x, y, lineWidth, color) {
 		var context = state.context;
 
 		context.beginPath();
-		context.strokeStyle = this.color;
+		context.fillStyle = this.color;
+		context.strokeStyle = this.strokeColor;
 		context.lineWidth = this.lineWidth;
 		context.moveTo(this.startPoint.x, this.startPoint.y);
 		context.lineTo(this.endPoint.x, this.endPoint.y);
+		context.fill();
 		context.stroke();
 	}
 
@@ -312,6 +324,7 @@ function State(canvas) {
 function Tools() {
 	this.nextObject = "pen";
 	this.nextColor = "#000000";
+	this.strokeColor = "#000000";
 	this.fill = true;
 }
 
@@ -359,7 +372,7 @@ $(document).ready(function() {
 	    		var size = $("#textSize").val();
 	    		var font = $("#font").val();
 
-	    		state.shapes.push(new Text(text, state.startPoint.x, state.startPoint.y, tools.nextColor, size, font));
+	    		state.shapes.push(new Text(text, state.startPoint.x, state.startPoint.y, tools.nextColor, tools.strokeColor, size, font));
 	    		state.dragging = false;
 	    		state.valid = false;
 	    		return;
@@ -369,13 +382,13 @@ $(document).ready(function() {
 	    		state.shapes.push(pen);
 	    		break;
 	    	case "rect":
-	    		state.shapes.push(new Rect(state.startPoint.x, state.startPoint.y, tools.nextColor, tools.fill, lineWidth));
+	    		state.shapes.push(new Rect(state.startPoint.x, state.startPoint.y, tools.nextColor, tools.strokeColor, tools.fill, lineWidth));
 	    		break;
 	    	case "circle":
-	    		state.shapes.push(new Circle(state.startPoint.x, state.startPoint.y, 0, tools.nextColor, tools.fill, lineWidth));
+	    		state.shapes.push(new Circle(state.startPoint.x, state.startPoint.y, 0, tools.nextColor, tools.strokeColor, tools.fill, lineWidth));
 	    		break;
 	    	case "line":
-	    		state.shapes.push(new Line(state.startPoint.x, state.startPoint.y, lineWidth, tools.nextColor));
+	    		state.shapes.push(new Line(state.startPoint.x, state.startPoint.y, lineWidth, tools.nextColor, tools.strokeColor));
 	    		break;
 	    	case "move":
 	    		for(var i = state.shapes.length - 1; i >= 0; i--) {
@@ -423,8 +436,14 @@ $(document).ready(function() {
     });
 
 
-	$(".colors").click(function(e) {
+	$(".colorsFill").click(function(e) {
 		tools.nextColor = $(this).data("tool");
+		console.log("fill " + tools.nextColor);
+	});
+
+	$(".colorsStroke").click(function(e) {
+		tools.strokeColor = $(this).data("tool");
+		console.log("stroke " + tools.strokeColor);
 	});
 	
 });

@@ -81,24 +81,27 @@ body {
 }
 
 
-#black {
+.black {
     background-color: #222;
 }
 
-#red {
+.red {
     background-color: #d9534f;
 }
 
-#blue {
+.blue {
     background-color: #337ab7;
 }
 
-#green {
+.green {
     background-color: #5cb85c;
 }
 
-.colors.tools {
-    padding : 8px;
+
+
+.colors {
+    padding: 12px;
+    border-color: black;
 }
 
 

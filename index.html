@@ -54,14 +54,27 @@
 
 
             <div id="right">
-                <h2>Colors</h2>
-                <button type="button" id="black" class="colors tool btn btn-default" data-tool="#222"></button>
-                <button type="button" id="red" class="colors tool btn btn-default" data-tool="#d9534f"></button>
-                <button type="button" id="blue" class="colors tool btn btn-default" data-tool="#337ab7"></button>
-                <button type="button" id="green" class="colors tool btn btn-default" data-tool="#5cb85c"></button>
+                <div id="fillColors">
+                    <h3>Fill Colors</h3>
+                    <button type="button" id="blackFill" class="black colors colorsFill tool btn btn-default" data-tool="#222"></button>
+                    <button type="button" id="whiteFill" class="white colors colorsFill tool btn btn-default" data-tool="#FFF"></button>
+                    <button type="button" id="redFill" class="red colors  colorsFill tool btn btn-default" data-tool="#d9534f"></button>
+                    <button type="button" id="blueFill" class="blue colors colorsFill tool btn btn-default" data-tool="#337ab7"></button>
+                    <button type="button" id="greenFill" class="green colors colorsFill tool btn btn-default" data-tool="#5cb85c"></button>
+                </div>
+
+                <div id="strokeColors">
+                    <h3>Outline Colors</h3>
+                    <button type="button" id="blackStroke" class="black colors colorsStroke tool btn btn-default" data-tool="#222"></button>
+                    <button type="button" id="whiteStroke" class="white colors colorsStroke tool btn btn-default" data-tool="#FFF"></button>
+                    <button type="button" id="redStroke" class="red colors colorsStroke tool btn btn-default" data-tool="#d9534f"></button>
+                    <button type="button" id="blueStroke" class="blue colors colorsStroke tool btn btn-default" data-tool="#337ab7"></button>
+                    <button type="button" id="greenStroke" class="green colors colorsStroke tool btn btn-default" data-tool="#5cb85c"></button>
+                </div>
+
                 <button type="button" id="fill" class="colors tool btn btn-default btn-lg">Fill Shape</button>
 
-                <h2>Text tools</h2>
+                <h3>Text tools</h3>
                 <div class="tool"><input type="text" id="textInput" rows="1" cols="10" placeholder="Text" class="form-control"></textarea></div>
                 <div class="tool"><input id="textSize" type="number"  value="12" placeholder="Text Size" class="form-control"></textarea></div>
                 <select class ="tool form-control" id="font">
@@ -71,7 +84,7 @@
                       <option value="Times New Roman">Times New Roman</option>
                       <option value="Verdana">Verdana</option>
                 </select>
-                <h2>Line tools</h2>
+                <h3>Line tools</h3>
                 <div class="tool"><input id="lineWidth" type="number" value="1" placeholder="Line Width" class="form-control"></input></div></div>
 
             </div>
