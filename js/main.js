@@ -452,6 +452,7 @@ $("#load").click(function() {
 		"user": "omar13",
 		"template": false
 	}
+
 	$.ajax({
 		type: "GET",
 		contentType: "application/json; charset=utf-8",
@@ -460,9 +461,15 @@ $("#load").click(function() {
 		dataType: "jsonp",
 		crossDomain: true,
 	success:function(data) {
-			for(var i = 0; i < data.length; i++) {
-				console.log(data[i]);
-			}
+		for(var i = 0; i < data.length; i++) {
+			console.log(data[i]);
+		}
+		
+		var p = {
+			"ID" : data.ID,
+			"Username" : data.UsernName
+		}		
+		console.log(p.ID);
 	},
 	error: function(xhr, err) {
 		console.log("error");
