@@ -105,7 +105,6 @@ function Text(text, x, y, color, strokeColor, size, font) {
 
 		context.beginPath();
 		context.rect(this.point.x, this.point.y - h, w, h);
-		context.stroke();
 		var contains = context.isPointInPath(x, y);
 		context.closePath();
 		if(contains === true) {
