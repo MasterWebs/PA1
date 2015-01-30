@@ -359,6 +359,8 @@ var tools = new Tools(document.getElementById("myCanvas"));
 $(document).ready(function() {
     setInterval(function() {  state.drawAll(); }, 10);
     $("#dialog").open = false;
+    //$("#loadForm").hide();
+    //$("#saveForm").hide();
 
     $("#myCanvas").mousedown( function(e) {
     	state.startPoint.x = e.pageX - this.offsetLeft;
@@ -508,9 +510,10 @@ $("#saveButton").click(function() {
 	});
 });
 
-$("#load").click(function() {
+$("#loadButton").click(function() {
 	var param = {
-		"user": "omar13",
+		"user": $("#username").val(),
+		"title": $("#title").val(),
 		"template": false
 	}
 
@@ -522,15 +525,21 @@ $("#load").click(function() {
 		dataType: "jsonp",
 		crossDomain: true,
 	success:function(data) {
+
 		for(var i = 0; i < data.length; i++) {
-			console.log(data[i]);
+			console.log(param.title);
+			if(data[i].WhiteboardTitle === param.title) {
+				var p = data[i];
+				
+				break;
+			}
+			else{
+				console.log("not found");
+			}
 		}
-		
-		var p = {
-			"ID" : data.ID,
-			"Username" : data.UsernName
-		}		
-		console.log(p.ID);
+		console.log(p);
+		console.log(p.WhiteboardContents);
+	
 	},
 	error: function(xhr, err) {
 		console.log("error");

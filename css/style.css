@@ -102,6 +102,11 @@ body {
 .colors {
     padding: 12px;
     border-color: black;
+    margin-top: 5px;
+}
+
+h3 {
+    margin: auto;
 }
 
 

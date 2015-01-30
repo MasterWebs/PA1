@@ -18,10 +18,9 @@
                     <button class="btn btn-primary" id="clear">Clear</button>
                     <button class="btn btn-primary" id="undo">Undo</button>
                     <button class="btn btn-primary" id="redo">Redo</button>
-                    <button class="btn btn-primary" id="load">Load</button>
                 </div>
 
-                    <div id="save">
+                <div id="saveForm">
                     <form class="form-inline">
                         <div class="form-group">
                             <label class="sr-only" for="username">Username</label>
@@ -31,15 +30,14 @@
                             <label class="sr-only" for="title">Password</label>
                             <input type="text" class="form-control" id="title" placeholder="Enter Title">
                         </div>
-                        <button type="button" class="btn btn-default" id="saveButton">Save</button>
+                    <button type="button" class="btn btn-default" id="saveButton">Save</button>
+                    <button type="button" class="btn btn-default" id="loadButton">Load</button>
                     </form>
                 </div>
-              
-
 
                 <div id="canvas">
-                    <canvas id="myCanvas" width="900" height="500" style="border:1px solid #000000;">
-                        Your browser is shit</canvas>
+                    <canvas id="myCanvas"  height="500px" width="900px" style="border:1px solid #000000;">
+                        Your browser does not support the canvas</canvas>
                 </div>
 
                 <div id="objects" >
