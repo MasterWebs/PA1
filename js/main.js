@@ -340,6 +340,7 @@ function State(canvas) {
 	this.selected = 0;		// index of item selected when moving
 	this.startPoint = new Point(0, 0); // to keep track of starting point (mousedown)
 	this.offsetDrag = new Point(0, 0); // store the offset from the top left corner
+
 }
 
 function Tools() {
@@ -347,6 +348,7 @@ function Tools() {
 	this.nextColor = "#000000";
 	this.strokeColor = "#000000";
 	this.fill = true;
+	this.template = false;
 }
 
 State.prototype.clear = function() {
@@ -404,7 +406,14 @@ $(document).ready(function() {
 	    		state.shapes.push(pen);
 	    		break;
 	    	case "rect":
-	    		state.shapes.push(new Rect(state.startPoint.x, state.startPoint.y, tools.nextColor, tools.strokeColor, tools.fill, lineWidth));
+	    		state.shapes.push(new Rect(state.startPoint.x,
+	    								state.startPoint.y, 
+	    								tools.nextColor, 
+	    								tools.strokeColor, 
+	    								tools.fill, 
+	    								lineWidth
+	    							));
+	    		console.log(state.shapes);
 	    		break;
 	    	case "circle":
 	    		state.shapes.push(new Circle(state.startPoint.x, state.startPoint.y, 0, tools.nextColor, tools.strokeColor, tools.fill, lineWidth));
@@ -503,6 +512,17 @@ $("#fill").click(function() {
 	}
 });
 
+$("#template").click(function() {
+	if(tools.template === true) {
+		tools.template = false;
+		$('#template').css("background-color", "#FFFFFF");
+	}
+	else {
+		tools.template = true;
+		$('#template').css("background-color", "#00BFFF");
+	}
+});
+
 $("#saveButton").click(function() {
 
 	var username = $("#username").val();
@@ -532,8 +552,8 @@ $("#saveButton").click(function() {
 
 $("#loadButton").click(function() {
 	var param = {
-		"user": $("#username").val(),
-		"title": $("#title").val(),
+		"user": "omar13",//$("#username").val(),
+		"title": "recta", //$("#title").val(),
 		"template": false
 	}
 
@@ -545,20 +565,34 @@ $("#loadButton").click(function() {
 		dataType: "jsonp",
 		crossDomain: true,
 	success:function(data) {
-
+		var found = false;
 		for(var i = 0; i < data.length; i++) {
 			console.log(param.title);
 			if(data[i].WhiteboardTitle === param.title) {
+				console.log(data[i]);
 				var p = data[i];
-				
+				found = true;
+				console.log("data " + data[i]);
+				console.log("p " + p);
 				break;
 			}
 			else{
 				console.log("not found");
 			}
+
+
 		}
-		console.log(p);
-		console.log(p.WhiteboardContents);
+		
+		if(found) {
+			console.log("p ");
+			console.log(p.ID);
+			var c  = JSON.parse(p.WhiteboardContents);
+			console.log(c);
+		}
+
+		for(var i = 0; i < c.length; i++) {
+			console.log(c[i]);
+		}
 	
 	},
 	error: function(xhr, err) {
