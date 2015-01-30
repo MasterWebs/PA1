@@ -81,7 +81,7 @@ function Rect(x, y, color, strokeColor, fill, lineWidth) {
 }
 
 function Text(text, x, y, color, strokeColor, size, font) {
-	this.point = new Point(x, y);
+	this.point = new Point(x, y); // point is at lower left corner
 	this.color = color;
 	this.strokeColor = strokeColor;
 	this.size = size;
@@ -98,6 +98,31 @@ function Text(text, x, y, color, strokeColor, size, font) {
 		context.strokeText(this.text, this.point.x, this.point.y);
 	}
 
+	this.isAt = function(x, y) {
+		var context = state.context;
+		var w = context.measureText(this.text).width;
+		var h = this.size;
+
+		context.beginPath();
+		context.rect(this.point.x, this.point.y - h, w, h);
+		context.stroke();
+		var contains = context.isPointInPath(x, y);
+		context.closePath();
+		if(contains === true) {
+			state.offsetDrag.x = x - this.point.x;
+			state.offsetDrag.y = y - this.point.y;
+			console.log("found text!");
+		}
+		return contains;
+	}
+
+	this.move = function(x, y) {
+		var xDif = this.point.x - (x - state.offsetDrag.x);
+		var yDif = this.point.y - (y - state.offsetDrag.y);
+
+		this.point.x -= xDif;
+		this.point.y -= yDif;
+	}
 }
 
 function Circle(x, y, w, color, strokeColor, fill, lineWidth) {
@@ -202,9 +227,6 @@ function Pen(lineWidth, color) {
 			highestY = Math.max(this.points[i].y, highestY);
 			lowestY = Math.min(this.points[i].y, lowestY);
 		}
-
-		console.log(lowestX + "." + lowestY);
-		console.log(highestX + "." + highestY);
 
 		var w = Math.abs(highestX - lowestX);
 		var h = Math.abs(highestY - lowestY);
@@ -373,7 +395,6 @@ $(document).ready(function() {
 	    		var font = $("#font").val();
 
 	    		state.shapes.push(new Text(text, state.startPoint.x, state.startPoint.y, tools.nextColor, tools.strokeColor, size, font));
-	    		state.dragging = false;
 	    		state.valid = false;
 	    		return;
 	    	case "pen":
