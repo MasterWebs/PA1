@@ -199,11 +199,12 @@ function Pen(lineWidth, color) {
 		for(var i = 0; i < this.points.length; i++) {
 			highestX = Math.max(this.points[i].x, highestX);
 			lowestX = Math.min(this.points[i].x, lowestX);
-			highestY = Math.max(this.points[i].y, highestX);
+			highestY = Math.max(this.points[i].y, highestY);
 			lowestY = Math.min(this.points[i].y, lowestY);
 		}
 
-		console.log(x + "-" + y);
+		console.log(lowestX + "." + lowestY);
+		console.log(highestX + "." + highestY);
 
 		var w = Math.abs(highestX - lowestX);
 		var h = Math.abs(highestY - lowestY);
@@ -211,7 +212,6 @@ function Pen(lineWidth, color) {
 		context.beginPath();
 		context.rect(lowestX, lowestY, w, h);
 		var contains = context.isPointInPath(x, y);
-		context.stroke();
 		context.closePath();
 		if(contains === true) {
 			this.selectedPoint.x = x;
