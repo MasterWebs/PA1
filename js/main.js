@@ -45,7 +45,7 @@ function Rect(x, y, color, strokeColor, fill, lineWidth) {
 			context.stroke();
 		}	
 		else{
-			context.strokeStyle = this.color;
+			context.strokeStyle = this.strokeColor;
 			context.lineWidth = this.lineWidth;
 			context.rect(this.startPoint.x, this.startPoint.y, w, h);
 			context.stroke();
