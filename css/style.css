@@ -6,7 +6,7 @@ body {
 }
 
 #container {
-    width:90%;
+    width:1143px;
     float: left;
 }
 
@@ -25,15 +25,21 @@ body {
     height: 520px;
 }
 
+#left {
+    display: inline-block;
+    background-color: e75486;
+    float: left;
+    width: 100px;
+}
+
 .tool {
     margin-top: 20px;
     margin-bottom: 5px;
 }
 
-
-#objects .yellow {
-    background-color:#FFCC00;
-    color:#333;
+#objects {
+    width: 500px;
+    float: left;
 }
 
 #objects .blue {
@@ -41,19 +47,6 @@ body {
     color:#333;
 }
 
-#objects .pink {
-    background-color:#FF99FF;
-    color:#333;
-}
-
-#objects .green {
-    background-color:#A3D900;
-    color:#333;
-}
-#objects .purple {
-    background-color:#B399FF;
-    color:#333;
-}
 
 .btn-default.active, .btn-default.focus, .btn-default:active, .btn-default:focus, .btn-default:hover, .open>.dropdown-toggle.btn-default {
     color: #333;
@@ -97,12 +90,15 @@ body {
     background-color: #5cb85c;
 }
 
-
-
 .colors {
     padding: 12px;
-    border-color: black;
+    border: 1px solid black;
     margin-top: 5px;
+}
+
+.colors:hover{
+    padding: 15px;
+    color: ;
 }
 
 h3 {
@@ -111,6 +107,10 @@ h3 {
 
 #template{
     background-color: #FFFFFF;
+}
+
+#toolsForm {
+    margin-top: 5px;
 }
 
 

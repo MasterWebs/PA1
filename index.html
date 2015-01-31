@@ -46,47 +46,54 @@
                     <button type="button" class="object btn btn-default btn-lg" data-tool="circle">Cirlce</button>
                     <button type="button" class="object btn btn-default btn-lg" data-tool="rect">Rectangle</button>
                     <button type="button" class="object btn btn-default btn-lg" data-tool="line">Line</button>
-                    <button type="button" class="object btn btn-default btn-lg" data-tool="text">Text</button>
+                    <button type="button" id="text" class="object btn btn-default btn-lg" data-tool="text">Text</button>
                     <button type="button" class="object btn btn-default btn-lg active" data-tool="pen">Pen</button>
                     <button type="button" class="object btn btn-default btn-lg" data-tool="move">Move</button>
+                   
+                    <div id="toolsForm"> 
+                        <div id="textForm">
+                            <h3>Text tools</h3>
+                            <div class="tool"><input type="text" id="textInput"  placeholder="Text" class="form-control"></div>
+                            <div class="tool"><input id="textSize" type="number"  value="12" placeholder="Text Size" class="form-control"></div>
+                           
+                            <select class ="tool form-control" id="font">
+                                <option value="Arial">Arial</option>  
+                                <option value="Comic Sans MS">Comic Sans</option>
+                                <option value="Courier New">Courier New</option>
+                                <option value="Times New Roman">Times New Roman</option>
+                                <option value="Verdana">Verdana</option>
+                            </select>
+                        </div>
+
+                        <div id="lineForm">
+                            <h3>Line tools</h3>
+                            <div class="tool"><input id="lineWidth" type="number" value="1" placeholder="Line Width" class="form-control"></input></div>
+                        </div>
+                    </div>
+
                 </div>
+
+               
             </div>
 
 
             <div id="right">
                 <div id="fillColors">
                     <h3>Fill Colors</h3>
-                    <button type="button" id="blackFill" class="black colors colorsFill tool btn btn-default" data-tool="#222"></button>
-                    <button type="button" id="whiteFill" class="white colors colorsFill tool btn btn-default" data-tool="#FFF"></button>
-                    <button type="button" id="redFill" class="red colors  colorsFill tool btn btn-default" data-tool="#d9534f"></button>
-                    <button type="button" id="blueFill" class="blue colors colorsFill tool btn btn-default" data-tool="#337ab7"></button>
-                    <button type="button" id="greenFill" class="green colors colorsFill tool btn btn-default" data-tool="#5cb85c"></button>
-                </div>
+                    <button type="button" id="blackFill" class="black colors colorsFill tool " data-tool="#222"></button>
+                    <button type="button" id="whiteFill" class="white colors colorsFill tool " data-tool="#FFF"></button>
+                    <button type="button" id="redFill" class="red colors  colorsFill tool " data-tool="#d9534f"></button>
+                    <button type="button" id="blueFill" class="blue colors colorsFill tool" data-tool="#337ab7"></button>
+                    <button type="button" id="greenFill" class="green colors colorsFill tool" data-tool="#5cb85c"></button>
 
-                <div id="strokeColors">
                     <h3>Outline Colors</h3>
-                    <button type="button" id="blackStroke" class="black colors colorsStroke tool btn btn-default" data-tool="#222"></button>
-                    <button type="button" id="whiteStroke" class="white colors colorsStroke tool btn btn-default" data-tool="#FFF"></button>
-                    <button type="button" id="redStroke" class="red colors colorsStroke tool btn btn-default" data-tool="#d9534f"></button>
-                    <button type="button" id="blueStroke" class="blue colors colorsStroke tool btn btn-default" data-tool="#337ab7"></button>
-                    <button type="button" id="greenStroke" class="green colors colorsStroke tool btn btn-default" data-tool="#5cb85c"></button>
+                    <button type="button" id="blackStroke" class="black colors colorsStroke" data-tool="#222"></button>
+                    <button type="button" id="whiteStroke" class="white colors colorsStroke" data-tool="#FFF"></button>
+                    <button type="button" id="redStroke" class="red colors colorsStroke tool" data-tool="#d9534f"></button>
+                    <button type="button" id="blueStroke" class="blue colors colorsStroke tool" data-tool="#337ab7"></button>
+                    <button type="button" id="greenStroke" class="green colors colorsStroke tool" data-tool="#5cb85c"></button>
                 </div>
-
                 <button type="button" id="fill" class="colors tool btn btn-default btn-lg">Fill Shape</button>
-
-                <h3>Text tools</h3>
-                <div class="tool"><input type="text" id="textInput" rows="1" cols="10" placeholder="Text" class="form-control"></textarea></div>
-                <div class="tool"><input id="textSize" type="number"  value="12" placeholder="Text Size" class="form-control"></textarea></div>
-                <select class ="tool form-control" id="font">
-                      <option value="Arial">Arial</option>  
-                      <option value="Comic Sans MS">Comic Sans</option>
-                      <option value="Courier New">Courier New</option>
-                      <option value="Times New Roman">Times New Roman</option>
-                      <option value="Verdana">Verdana</option>
-                </select>
-                <h3>Line tools</h3>
-                <div class="tool"><input id="lineWidth" type="number" value="1" placeholder="Line Width" class="form-control"></input></div></div>
-
             </div>
 
         </div>

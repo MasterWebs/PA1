@@ -381,9 +381,7 @@ var tools = new Tools(document.getElementById("myCanvas"));
 
 $(document).ready(function() {
     setInterval(function() {  state.drawAll(); }, 10);
-    $("#dialog").open = false;
-    //$("#loadForm").hide();
-    //$("#saveForm").hide();
+    $("#textForm").hide();
 
     $("#myCanvas").mousedown( function(e) {
     	state.startPoint.x = e.pageX - this.offsetLeft;
@@ -498,8 +496,20 @@ $("#redo").click(function() {
 $(".object").click(function(e) {
 	tools.nextObject = $(this).data("tool");
 	$('#objects button').addClass('active').not(this).removeClass('active')
+	
+	if(tools.nextObject === "text") {
+		console.log("yup");
+		$("#textForm").show();
+		$("#lineForm").hide();
+	}
+	else {
+		console.log("nat");
+		$("#textForm").hide();
+		$("#lineForm").show();
+	}
 
 });
+
 
 $("#fill").click(function() {
 	if(tools.fill === true){
