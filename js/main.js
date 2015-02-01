@@ -587,15 +587,17 @@ $("#loadButton").click(function() {
 	success:function(data) {
 		var found = false;
 		for(var i = 0; i < data.length; i++) {
-			console.log(data[i].WhiteboardTitle);
+			console.log("data " + data[i]);
 			
 			var tableContent = "";
 			$.each(data, function(i, item) {
 				tableContent += "<tr><td>" + item.WhiteboardTitle + "</tr></td>";
-				console.log( i + " " + tableContent);
 			});		
 			$("#recentDraws").append(tableContent);
 
+			var c = data[i].WhiteboardContents.startPoint.x;
+			console.log("c " + c);
+			console.log(c.startPoint);
 		}
 		
 

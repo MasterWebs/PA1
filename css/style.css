@@ -100,13 +100,13 @@ body {
 }
 
 .colors {
-    padding: 12px;
+    padding: 10px;
     border: 1px solid black;
     margin-top: 5px;
 }
 
 .colors:hover{
-    padding: 15px;
+    padding: 12px;
     color: ;
 }
 
