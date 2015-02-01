@@ -627,7 +627,7 @@ $("#login").click(function() {
 
 function getDraw(id) {
 	var param = {
-		"id": $(this).data("id")
+		"id": id
 	}
 
 	$.ajax({
@@ -639,9 +639,9 @@ function getDraw(id) {
 		crossDomain: true,
 		success:function(data) {
 			console.log(data);
-			for(var i = 0; i < data.length; i++) {
-				console.log(data[i]);
-			}
+			
+			var c = data.WhiteboardContents;
+			loadShapes(c);
 		},
 		error: function(xhr, err) {
 			console.log("error");
