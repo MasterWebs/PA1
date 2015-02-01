@@ -1,12 +1,12 @@
 body {
     padding-top: 10px;
     font-family:sans-serif;
-    width: 95%;
+    width: 1195px;
     margin: 0 auto;
 }
 
 #container {
-    width: 1233px;
+    width: 1200px;
     float: left;
 }
 
@@ -21,7 +21,7 @@ body {
     display: inline-block;
     padding-top: 28px;
     float:right;
-    width:220px;
+    width:170px;
     height: 520px;
 }
 
@@ -30,6 +30,16 @@ body {
     background-color: e75486;
     float: left;
     width: 100px;
+    margin-right: 20px;
+}
+
+#logForm {
+    width: 262px;
+    float: right;
+}
+#saveForm {
+    width: 426px;
+    float: right;
 }
 
 .tool {
@@ -40,6 +50,7 @@ body {
 #objects {
     float: left;
     margin-top: 31px;
+    margin-bottom: 6px;
 }
 
 .object {
@@ -106,12 +117,12 @@ body {
 }
 
 .colors:hover{
-    padding: 12px;
-    color: ;
+    /*padding: 12px;
+    color: ;*/
 }
 
-h3 {
-    margin: auto;
+strong {
+    margin: 3px 3px;
 }
 
 #template{
@@ -120,6 +131,10 @@ h3 {
 
 #toolsForm {
     margin-top: 5px;
+}
+
+#logError {
+    color: #d9534f;
 }
 
 .unselectable {

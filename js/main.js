@@ -346,6 +346,7 @@ function State(canvas) {
 	this.selected = 0;		// index of item selected when moving
 	this.startPoint = new Point(0, 0); // to keep track of starting point (mousedown)
 	this.offsetDrag = new Point(0, 0); // store the offset from the top left corner
+	this.loggedIn = false;
 
 }
 
@@ -355,6 +356,7 @@ function Tools() {
 	this.strokeColor = "#000000";
 	this.fill = true;
 	this.template = false;
+	this.colorSelect = $("#colorSelect").val();
 }
 
 State.prototype.clear = function() {
@@ -389,6 +391,9 @@ $(document).ready(function() {
     setInterval(function() {  state.drawAll(); }, 10);
 
     $("#textForm").hide();
+    $("#saveForm").hide();
+    $("#logError").hide();
+    $("#savedDraws").hide();
 
     $("#myCanvas").mousedown( function(e) {
     	state.startPoint.x = e.pageX - this.offsetLeft;
@@ -472,15 +477,18 @@ $(document).ready(function() {
     });
 
 
-	$(".colorsFill").click(function(e) {
-		tools.nextColor = $(this).data("tool");
-		console.log("fill " + tools.nextColor);
+	$(".colors").click(function(e) {
+		
+		if($("#colorSelect").val() == "Fill") 
+			tools.nextColor = $(this).data("tool");
+		else 
+			tools.strokeColor = $(this).data("tool");
 	});
 
-	$(".colorsStroke").click(function(e) {
+	/*$(".colorsStroke").click(function(e) {
 		tools.strokeColor = $(this).data("tool");
 		console.log("stroke " + tools.strokeColor);
-	});
+	});*/
 	
 });
 
@@ -669,4 +677,30 @@ $("#loadButton").click(function() {
 		}
 	});
 
+});
+
+$("#login").click(function() {
+	if(!state.loggedIn) {
+		if($("#username").val() != "") {
+			state.loggedIn = true;
+			$("#username").val("");
+			$("#logForm").hide();
+			$("#savedDraws").show();
+			$("#saveForm").show();
+		}
+		else {
+			$("#logError").show();
+		}
+	}
+	else
+		$("#logError").show();
+});
+
+$("#logOut").click(function() {
+	if(state.loggedIn) {
+		state.loggedIn = false;
+		$("#logForm").show();
+		$("#saveForm").hide();
+		$("#savedDraws").hide();
+	}
 });
