@@ -350,6 +350,7 @@ function State(canvas) {
 	this.selected = 0;		// index of item selected when moving
 	this.startPoint = new Point(0, 0); // to keep track of starting point (mousedown)
 	this.offsetDrag = new Point(0, 0); // store the offset from the top left corner
+	this.loggedIn = false;
 
 }
 
@@ -393,6 +394,9 @@ var tools = new Tools(document.getElementById("myCanvas"));
 $(document).ready(function() {
     setInterval(function() {  state.drawAll(); }, 10);
     $("#textForm").hide();
+    $("#saveForm").hide();
+    $("#logError").hide();
+    $("#savedDraws").hide();
 
     $("#myCanvas").mousedown( function(e) {
     	state.startPoint.x = e.pageX - this.offsetLeft;
@@ -612,4 +616,30 @@ $("#loadButton").click(function() {
 	}
 	});
 
+});
+
+$("#login").click(function() {
+	if(!state.loggedIn) {
+		if($("#username").val() != "") {
+			state.loggedIn = true;
+			$("#username").val("");
+			$("#logForm").hide();
+			$("#savedDraws").show();
+			$("#saveForm").show();
+		}
+		else {
+			$("#logError").show();
+		}
+	}
+	else
+		$("#logError").show();
+});
+
+$("#logOut").click(function() {
+	if(state.loggedIn) {
+		state.loggedIn = false;
+		$("#logForm").show();
+		$("#saveForm").hide();
+		$("#savedDraws").hide();
+	}
 });

@@ -15,6 +15,7 @@
         <div id="container" class="unselectable">
             <div id="left">
                 <div id="objects">
+                    <strong>Tools</strong>
                     <button type="button" class="object btn btn-default" data-tool="circle">Cirlce</button>
                     <button type="button" class="object btn btn-default" data-tool="rect">Rectangle</button>
                     <button type="button" class="object btn btn-default" data-tool="line">Line</button>
@@ -47,20 +48,28 @@
 
                 </div>
 
-                <div id="saveForm">
+                <div id="logForm">
                     <form class="form-inline">
                         <div class="form-group">
                             <label class="sr-only" for="username">Username</label>
                             <input type="email" class="form-control" id="username" placeholder="Enter Username">
                         </div>
-                       <!-- <div class="form-group">
-                            <label class="sr-only" for="title">Password</label>
+                        <button type="button" id="login" class="btn btn-default">Login</button>
+                        <strong id="logError">Username cannot be empty</strong>
+                    </form>
+                </div>
+
+                <div id="saveForm">
+                    <form class="form-inline">
+                       <div class="form-group">
+                            <label class="sr-only" for="title">Title</label>
                             <input type="text" class="form-control" id="title" placeholder="Enter Title">
-                        </div> -->
-                    <button type="button" id="saveButton" class="btn btn-default" >Login</button>
-                    <!--<button type="button" id="loadButton" class="btn btn-default" >Load</button>
-                    <button type="button" id="template" class="btn btn-default">Template</button>
-                    </form>-->
+                        </div>
+
+                        <button type="button" id="template" class="btn btn-default">Template</button>
+                        <button type="button" id="saveButton" class="btn btn-default" >Save</button>
+                        <button type="button" id="logOut" class="btn btn-default">LogOut</button>
+                    </form>
                 </div>
 
                 <div id="canvas">
@@ -69,52 +78,33 @@
                 </div>
 
                    
-                    <div id="toolsForm"> 
-                        <div id="textForm">
-                            <h3>Text tools</h3>
-                            <div class="tool"><input type="text" id="textInput"  placeholder="Text" class="form-control"></div>
-                            <div class="tool"><input id="textSize" type="number"  value="12" placeholder="Text Size" class="form-control"></div>
-                           
-                            <select class ="tool form-control" id="font">
-                                <option value="Arial">Arial</option>  
-                                <option value="Comic Sans MS">Comic Sans</option>
-                                <option value="Courier New">Courier New</option>
-                                <option value="Times New Roman">Times New Roman</option>
-                                <option value="Verdana">Verdana</option>
-                            </select>
-                        </div>
-
-                        <div id="lineForm">
-                            <h3>Line tools</h3>
-                            <div class="tool"><input id="lineWidth" type="number" value="1" placeholder="Line Width" class="form-control"></input></div>
-                        </div>
+                <div id="toolsForm"> 
+                    <div id="textForm">
+                        <h3>Text tools</h3>
+                        <div class="tool"><input type="text" id="textInput"  placeholder="Text" class="form-control"></div>
+                        <div class="tool"><input id="textSize" type="number"  value="12" placeholder="Text Size" class="form-control"></div>
+                       
+                        <select class ="tool form-control" id="font">
+                            <option value="Arial">Arial</option>  
+                            <option value="Comic Sans MS">Comic Sans</option>
+                            <option value="Courier New">Courier New</option>
+                            <option value="Times New Roman">Times New Roman</option>
+                            <option value="Verdana">Verdana</option>
+                        </select>
                     </div>
 
-            
-                
-                <div>
-                    <button type="button" id="saveButton" class="btn btn-default" >Save</button>
-                    <button type="button" id="loadButton" class="btn btn-default" >Load</button>
+                    <div id="lineForm">
+                        <h3>Line tools</h3>
+                        <div class="tool"><input id="lineWidth" type="number" value="1" placeholder="Line Width" class="form-control"></input></div>
+                    </div>
                 </div>
+        </div>
 
-                <table id="recentDraws">
-                    <tr>
-                        <td>prump</td>
-                    </tr>
+        <div id="right">
+             <table id="savedDraws">
+                <th>Saved Drawings</th>
 
-                </table>
-               
-            </div>
-
-
-            <div id="right">
-                <div class="form-group">
-                            <label class="sr-only" for="username">Username</label>
-                            <input type="email" class="form-control" id="username" placeholder="Enter Username">
-                        </div>
-                <button class="btn btn-default">login</button>
-            </div>
-
+            </table>
         </div>
     
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
