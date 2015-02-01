@@ -6,7 +6,7 @@ body {
 }
 
 #container {
-    width: 1233px;
+    width: 1305px;
     float: left;
 }
 
@@ -21,7 +21,7 @@ body {
     display: inline-block;
     padding-top: 28px;
     float:right;
-    width:220px;
+    width:275px;
     height: 520px;
 }
 
@@ -30,6 +30,12 @@ body {
     background-color: e75486;
     float: left;
     width: 100px;
+    margin-right: 20px;
+}
+
+#saveForm{
+    width: 262px;
+    float: right;
 }
 
 .tool {

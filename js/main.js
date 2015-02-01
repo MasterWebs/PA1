@@ -359,6 +359,7 @@ function Tools() {
 	this.strokeColor = "#000000";
 	this.fill = true;
 	this.template = false;
+	this.colorSelect = $("#colorSelect").val();
 }
 
 State.prototype.clear = function() {
@@ -475,15 +476,18 @@ $(document).ready(function() {
     });
 
 
-	$(".colorsFill").click(function(e) {
-		tools.nextColor = $(this).data("tool");
-		console.log("fill " + tools.nextColor);
+	$(".colors").click(function(e) {
+		
+		if($("#colorSelect").val() == "Fill") 
+			tools.nextColor = $(this).data("tool");
+		else 
+			tools.strokeColor = $(this).data("tool");
 	});
 
-	$(".colorsStroke").click(function(e) {
+	/*$(".colorsStroke").click(function(e) {
 		tools.strokeColor = $(this).data("tool");
 		console.log("stroke " + tools.strokeColor);
-	});
+	});*/
 	
 });
 

@@ -24,22 +24,21 @@
                 </div>
 
                 <div id="fillColors">
-                    <strong>Fill Colors</strong>
+                    <strong>Colors</strong>
+                    <select id="colorSelect" class="form-control">
+                        <option>Fill</option>
+                        <option>Outline</option>
+                    </select>
+
                     <button type="button" id="blackFill" class="black colors colorsFill tool " data-tool="#222"></button>
                     <button type="button" id="whiteFill" class="white colors colorsFill tool " data-tool="#FFF"></button>
                     <button type="button" id="redFill" class="red colors  colorsFill tool " data-tool="#d9534f"></button>
                     <button type="button" id="blueFill" class="blue colors colorsFill tool" data-tool="#337ab7"></button>
                     <button type="button" id="greenFill" class="green colors colorsFill tool" data-tool="#5cb85c"></button>
-
-                    <strong>Outline Colors</strong>
-                    <button type="button" id="blackStroke" class="black colors colorsStroke" data-tool="#222"></button>
-                    <button type="button" id="whiteStroke" class="white colors colorsStroke" data-tool="#FFF"></button>
-                    <button type="button" id="redStroke" class="red colors colorsStroke tool" data-tool="#d9534f"></button>
-                    <button type="button" id="blueStroke" class="blue colors colorsStroke tool" data-tool="#337ab7"></button>
-                    <button type="button" id="greenStroke" class="green colors colorsStroke tool" data-tool="#5cb85c"></button>
                 </div>
                 <button type="button" id="fill" class="colors tool btn btn-default btn-lg">Fill Shape</button>
             </div>
+
             <div id="center">
                 <div id="function">
                     <button class="btn btn-primary" id="clear">Clear</button>
@@ -54,14 +53,14 @@
                             <label class="sr-only" for="username">Username</label>
                             <input type="email" class="form-control" id="username" placeholder="Enter Username">
                         </div>
-                        <div class="form-group">
+                       <!-- <div class="form-group">
                             <label class="sr-only" for="title">Password</label>
                             <input type="text" class="form-control" id="title" placeholder="Enter Title">
-                        </div>
-                    <button type="button" id="saveButton" class="btn btn-default" >Save</button>
-                    <button type="button" id="loadButton" class="btn btn-default" >Load</button>
+                        </div> -->
+                    <button type="button" id="saveButton" class="btn btn-default" >Login</button>
+                    <!--<button type="button" id="loadButton" class="btn btn-default" >Load</button>
                     <button type="button" id="template" class="btn btn-default">Template</button>
-                    </form>
+                    </form>-->
                 </div>
 
                 <div id="canvas">
@@ -109,22 +108,11 @@
 
 
             <div id="right">
-                <div id="fillColors">
-                    <h3>Fill Colors</h3>
-                    <button type="button" id="blackFill" class="black colors colorsFill tool " data-tool="#222"></button>
-                    <button type="button" id="whiteFill" class="white colors colorsFill tool " data-tool="#FFF"></button>
-                    <button type="button" id="redFill" class="red colors  colorsFill tool " data-tool="#d9534f"></button>
-                    <button type="button" id="blueFill" class="blue colors colorsFill tool" data-tool="#337ab7"></button>
-                    <button type="button" id="greenFill" class="green colors colorsFill tool" data-tool="#5cb85c"></button>
-
-                    <h3>Outline Colors</h3>
-                    <button type="button" id="blackStroke" class="black colors colorsStroke" data-tool="#222"></button>
-                    <button type="button" id="whiteStroke" class="white colors colorsStroke" data-tool="#FFF"></button>
-                    <button type="button" id="redStroke" class="red colors colorsStroke tool" data-tool="#d9534f"></button>
-                    <button type="button" id="blueStroke" class="blue colors colorsStroke tool" data-tool="#337ab7"></button>
-                    <button type="button" id="greenStroke" class="green colors colorsStroke tool" data-tool="#5cb85c"></button>
-                </div>
-                <button type="button" id="fill" class="colors tool btn btn-default btn-lg">Fill Shape</button>
+                <div class="form-group">
+                            <label class="sr-only" for="username">Username</label>
+                            <input type="email" class="form-control" id="username" placeholder="Enter Username">
+                        </div>
+                <button class="btn btn-default">login</button>
             </div>
 
         </div>
