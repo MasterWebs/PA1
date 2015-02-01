@@ -13,7 +13,7 @@
     <body>
 
         <div id="container" class="unselectable">
-            <div id="left">
+            <div id="left" class="unselectable">
                 <div id="objects">
                     <strong>Tools</strong>
                     <button type="button" class="object btn btn-default" data-tool="circle">Cirlce</button>
@@ -66,7 +66,7 @@
                             <input type="text" class="form-control" id="title" placeholder="Enter Title">
                         </div>
 
-                        <button type="button" id="loadButton" class="btn btn-default">Load</button>
+                        <!--<button type="button" id="loadButton" class="btn btn-default">Load</button>-->
                         <button type="button" id="saveButton" class="btn btn-default" >Save</button>
                         <button type="button" id="logOut" class="btn btn-default">LogOut</button>
                     </form>
@@ -101,9 +101,8 @@
         </div>
 
         <div id="right">
-             <table id="savedDraws" class="toggle">
+             <table id="savedDraws" class="toggle table table-striped">
                 <th>Saved Drawings</th>
-
             </table>
         </div>
     
@@ -116,4 +115,6 @@
         <script src="js/shapes.js"></script>
     </body>
 </html>
+
+
 

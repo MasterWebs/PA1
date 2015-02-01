@@ -347,6 +347,8 @@ function State(canvas) {
 	this.startPoint = new Point(0, 0); // to keep track of starting point (mousedown)
 	this.offsetDrag = new Point(0, 0); // store the offset from the top left corner
 	this.loggedIn = false;
+	this.username = "";
+	//state.loadTitle = "";
 
 }
 
@@ -544,11 +546,11 @@ $("#template").click(function() {
 
 $("#saveButton").click(function() {
 
-	var username = $("#username").val();
+	//var username = $("#username").val();
 	var title = $("#title").val();
 	var stringifiedArray = JSON.stringify(state.shapes);
 	var param = {
-		"user": username,
+		"user": state.username,
 		"name": title,
 		"content": stringifiedArray,
 		"template": false
@@ -571,6 +573,81 @@ $("#saveButton").click(function() {
 		}
 	});
 });
+
+
+$("#login").click(function() {
+	if(!state.loggedIn) {
+		if($("#username").val() != "") {
+			state.loggedIn = true;
+			state.username = $("#username").val();
+			$("#logForm").hide();
+			$("#savedDraws").show();
+			$("#saveForm").show();
+
+			var param = {
+				"user": state.username,
+				"template": false
+			}
+
+			$.ajax({
+				type: "GET",
+				contentType: "application/json; charset=utf-8",
+				url: "http://whiteboard.apphb.com/Home/GetList",
+				data: param,
+				dataType: "jsonp",
+				crossDomain: true,
+				success:function(data) {
+					var c = false;
+					for(var i = 0; i < data.length; i++) {
+						var tableContent = "";
+						$.each(data, function(i, item) {
+							tableContent += "<tr><td data-id='" + item.ID + "'>" + item.WhiteboardTitle + "</tr></td>";
+						});		
+
+						$("#savedDraws").append(tableContent);
+
+						c = data[i].WhiteboardContents;
+					}
+					
+					$("td").click(function(e) {
+						getDraw($(this).data("id"));	
+					});
+
+				},
+				error: function(xhr, err) {
+					console.log("error");
+				}
+			});
+		}
+		else {
+			$("#logError").show();
+		}
+	}
+});
+
+function getDraw(id) {
+	var param = {
+		"id": $(this).data("id")
+	}
+
+	$.ajax({
+		type: "GET",
+		contentType: "application/json; charset=utf-8",
+		url: "http://whiteboard.apphb.com/Home/GetWhiteboard",
+		data: param,
+		dataType: "jsonp",
+		crossDomain: true,
+		success:function(data) {
+			console.log(data);
+			for(var i = 0; i < data.length; i++) {
+				console.log(data[i]);
+			}
+		},
+		error: function(xhr, err) {
+			console.log("error");
+		}
+	});
+}
 
 function loadShapes(c) {
 	var obj = JSON.parse(c);
@@ -636,65 +713,16 @@ function loadShapes(c) {
 	state.valid = false;
 }
 
-$("#loadButton").click(function() {
-	var param = {
-		"user": "dongle",//$("#username").val(),
-		"title": "jo",    //$("#title").val(),
-		"template": false
-	}
-
-	$.ajax({
-		type: "GET",
-		contentType: "application/json; charset=utf-8",
-		url: "http://whiteboard.apphb.com/Home/GetList",
-		data: param,
-		dataType: "jsonp",
-		crossDomain: true,
-		success:function(data) {
-			var found = false;
-			for(var i = 0; i < data.length; i++) {
-				var tableContent = "";
-				$.each(data, function(i, item) {
-					tableContent += "<tr><td>" + item.WhiteboardTitle + "</tr></td>";
-				});		
-				$("#recentDraws").append(tableContent);
-
-				var c = data[i].WhiteboardContents;
-				loadShapes(c);
-			}
-			
-
-		
-		},
-		error: function(xhr, err) {
-			console.log("error");
-		}
-	});
-
-});
-
-$("#login").click(function() {
-	if(!state.loggedIn) {
-		if($("#username").val() != "") {
-			state.loggedIn = true;
-			$("#username").val("");
-			$("#logForm").hide();
-			$("#savedDraws").show();
-			$("#saveForm").show();
-		}
-		else {
-			$("#logError").show();
-		}
-	}
-	else
-		$("#logError").show();
-});
 
 $("#logOut").click(function() {
 	if(state.loggedIn) {
 		state.loggedIn = false;
+		$("#username").val("");
+		state.username = "";
 		$("#logForm").show();
 		$("#saveForm").hide();
 		$("#savedDraws").hide();
+		state.username = "";
 	}
 });
+
