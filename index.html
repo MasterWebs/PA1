@@ -55,18 +55,18 @@
                             <input type="email" class="form-control" id="username" placeholder="Enter Username">
                         </div>
                         <button type="button" id="login" class="btn btn-default">Login</button>
-                        <strong id="logError">Username cannot be empty</strong>
+                        <strong id="logError" class="toggle">Username cannot be empty</strong>
                     </form>
                 </div>
 
-                <div id="saveForm">
+                <div id="saveForm" class="toggle">
                     <form class="form-inline">
                        <div class="form-group">
                             <label class="sr-only" for="title">Title</label>
                             <input type="text" class="form-control" id="title" placeholder="Enter Title">
                         </div>
 
-                        <button type="button" id="template" class="btn btn-default">Template</button>
+                        <button type="button" id="loadButton" class="btn btn-default">Load</button>
                         <button type="button" id="saveButton" class="btn btn-default" >Save</button>
                         <button type="button" id="logOut" class="btn btn-default">LogOut</button>
                     </form>
@@ -79,7 +79,7 @@
 
                    
                 <div id="toolsForm"> 
-                    <div id="textForm">
+                    <div id="textForm" class="toggle">
                         <h3>Text tools</h3>
                         <div class="tool"><input type="text" id="textInput"  placeholder="Text" class="form-control"></div>
                         <div class="tool"><input id="textSize" type="number"  value="12" placeholder="Text Size" class="form-control"></div>
@@ -101,7 +101,7 @@
         </div>
 
         <div id="right">
-             <table id="savedDraws">
+             <table id="savedDraws" class="toggle">
                 <th>Saved Drawings</th>
 
             </table>

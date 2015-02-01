@@ -393,11 +393,7 @@ var tools = new Tools(document.getElementById("myCanvas"));
 
 $(document).ready(function() {
     setInterval(function() {  state.drawAll(); }, 10);
-    $("#textForm").hide();
-    $("#saveForm").hide();
-    $("#logError").hide();
-    $("#savedDraws").hide();
-
+ 
     $("#myCanvas").mousedown( function(e) {
     	state.startPoint.x = e.pageX - this.offsetLeft;
     	state.startPoint.y = e.pageY - this.offsetTop;
