@@ -6,7 +6,7 @@ body {
 }
 
 #container {
-    width:1143px;
+    width: 1233px;
     float: left;
 }
 
@@ -38,8 +38,13 @@ body {
 }
 
 #objects {
-    width: 500px;
     float: left;
+    margin-top: 31px;
+}
+
+.object {
+    width: 85px;
+    margin-top: 4px;
 }
 
 #objects .blue {

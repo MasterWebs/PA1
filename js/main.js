@@ -6,6 +6,16 @@ function Shape() {
 	// prototype class
 }
 
+function loadShape(startPoint, endPoint) {
+	var context = state.context;
+	context.rect
+
+	var w = Math.abs(this.startPoint.x - this.endPoint.x);
+	var h = Math.abs(this.startPoint.y - this.endPoint.y);
+	context.rect(this.startPoint.x, this.startPoint.y, w, h);
+	context.fill();
+}
+
 function Rect(x, y, color, strokeColor, fill, lineWidth) {
 	this.startPoint = new Point(x, y);
 	this.endPoint = new Point(x, y);
@@ -577,32 +587,18 @@ $("#loadButton").click(function() {
 	success:function(data) {
 		var found = false;
 		for(var i = 0; i < data.length; i++) {
-			console.log(param.title);
-			if(data[i].WhiteboardTitle === param.title) {
-				console.log(data[i]);
-				var p = data[i];
-				found = true;
-				console.log("data " + data[i]);
-				console.log("p " + p);
-				break;
-			}
-			else{
-				console.log("not found");
-			}
-
+			console.log(data[i].WhiteboardTitle);
+			
+			var tableContent = "";
+			$.each(data, function(i, item) {
+				tableContent += "<tr><td>" + item.WhiteboardTitle + "</tr></td>";
+				console.log( i + " " + tableContent);
+			});		
+			$("#recentDraws").append(tableContent);
 
 		}
 		
-		if(found) {
-			console.log("p ");
-			console.log(p.ID);
-			var c  = JSON.parse(p.WhiteboardContents);
-			console.log(c);
-		}
 
-		for(var i = 0; i < c.length; i++) {
-			console.log(c[i]);
-		}
 	
 	},
 	error: function(xhr, err) {

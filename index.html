@@ -13,6 +13,16 @@
     <body>
 
         <div id="container" class="unselectable">
+            <div id="left">
+                <div id="objects">
+                    <button type="button" class="object btn btn-default" data-tool="circle">Cirlce</button>
+                    <button type="button" class="object btn btn-default" data-tool="rect">Rectangle</button>
+                    <button type="button" class="object btn btn-default" data-tool="line">Line</button>
+                    <button type="button" id="text" class="object btn btn-default" data-tool="text">Text</button>
+                    <button type="button" class="object btn btn-default  active" data-tool="pen">Pen</button>
+                    <button type="button" class="object btn btn-default" data-tool="move">Move</button>
+                </div>
+            </div>
             <div id="center">
                 <div id="function">
                     <button class="btn btn-primary" id="clear">Clear</button>
@@ -42,13 +52,6 @@
                         Your browser does not support the canvas</canvas>
                 </div>
 
-                <div id="objects" >
-                    <button type="button" class="object btn btn-default btn-lg" data-tool="circle">Cirlce</button>
-                    <button type="button" class="object btn btn-default btn-lg" data-tool="rect">Rectangle</button>
-                    <button type="button" class="object btn btn-default btn-lg" data-tool="line">Line</button>
-                    <button type="button" id="text" class="object btn btn-default btn-lg" data-tool="text">Text</button>
-                    <button type="button" class="object btn btn-default btn-lg active" data-tool="pen">Pen</button>
-                    <button type="button" class="object btn btn-default btn-lg" data-tool="move">Move</button>
                    
                     <div id="toolsForm"> 
                         <div id="textForm">
@@ -71,12 +74,19 @@
                         </div>
                     </div>
 
-                </div>
+            
                 
                 <div>
                     <button type="button" id="saveButton" class="btn btn-default" >Save</button>
                     <button type="button" id="loadButton" class="btn btn-default" >Load</button>
                 </div>
+
+                <table id="recentDraws">
+                    <tr>
+                        <td>prump</td>
+                    </tr>
+
+                </table>
                
             </div>
 
