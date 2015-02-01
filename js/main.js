@@ -37,8 +37,6 @@ function Rect(x, y, color, strokeColor, fill, lineWidth) {
 		var h = Math.abs(this.startPoint.y - this.endPoint.y);
 		context.beginPath();
 
-		console.log("drawing rect");
-
 		if(this.fill === true) {
 			context.fillStyle = this.color;
 			context.strokeStyle = this.strokeColor;
@@ -113,7 +111,6 @@ function Text(text, x, y, color, strokeColor, size, font) {
 		if(contains === true) {
 			state.offsetDrag.x = x - this.point.x;
 			state.offsetDrag.y = y - this.point.y;
-			console.log("found text!");
 		}
 		return contains;
 	}
@@ -419,7 +416,6 @@ $(document).ready(function() {
 	    								tools.fill, 
 	    								lineWidth
 	    							));
-	    		console.log(state.shapes);
 	    		break;
 	    	case "circle":
 	    		state.shapes.push(new Circle(state.startPoint.x, state.startPoint.y, 0, tools.nextColor, tools.strokeColor, tools.fill, lineWidth));
@@ -638,7 +634,7 @@ function getDraw(id) {
 		dataType: "jsonp",
 		crossDomain: true,
 		success:function(data) {
-			console.log(data);
+			// console.log(data);
 			
 			var c = data.WhiteboardContents;
 			loadShapes(c);
@@ -651,6 +647,7 @@ function getDraw(id) {
 
 function loadShapes(c) {
 	var obj = JSON.parse(c);
+	console.log(obj);
 
 	state.shapes = [];
 
@@ -709,7 +706,7 @@ function loadShapes(c) {
 		}
 	}
 
-	console.log(state.shapes);
+	console.log("it must be false");
 	state.valid = false;
 }
 
