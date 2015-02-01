@@ -43,7 +43,7 @@ body {
 }
 
 #saveForm {
-    width: 426px;
+    width: 336px;
     float: right;
 }
 
@@ -144,8 +144,14 @@ strong {
     margin-top: 5px;
 }
 
-#logError {
-    color: #d9534f;
+.error {
+    display: none;
+    color: #d9534f
+}
+
+.success {
+    display: none;
+    color: #5cb85c;
 }
 
 .unselectable {

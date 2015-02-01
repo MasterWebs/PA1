@@ -58,7 +58,7 @@
                             <input type="email" class="form-control" id="username" placeholder="Enter Username">
                         </div>
                         <button type="button" id="login" class="btn btn-default">Login</button>
-                        <strong id="logError" class="toggle">Username cannot be empty</strong>
+                        <strong id="logError" class="error toggle">Username cannot be empty</strong>
                     </form>
                 </div>
 
@@ -69,9 +69,11 @@
                             <input type="text" class="form-control" id="title" placeholder="Enter Title">
                         </div>
 
-                        <!--<button type="button" id="loadButton" class="btn btn-default">Load</button>-->
                         <button type="button" id="saveButton" class="btn btn-default" >Save</button>
                         <button type="button" id="logOut" class="btn btn-default">LogOut</button>
+                        <strong id="saveSuccess" class="success toggle">Saved succesfull</strong>
+                        <strong id="saveError" class="error toggle">Something went wrong</strong>
+                        <strong id="titleEmpty" class="error toggle">Title cannot be empty</strong>
                     </form>
                 </div>
 

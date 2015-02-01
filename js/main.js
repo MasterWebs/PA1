@@ -540,30 +540,36 @@ $("#template").click(function() {
 
 $("#saveButton").click(function() {
 	var title = $("#title").val();
-	var stringifiedArray = JSON.stringify(state.shapes);
-	var param = {
-		"user": state.username,
-		"name": title,
-		"content": stringifiedArray,
-		"template": false
-	};
+	if(title != "") {
+		var stringifiedArray = JSON.stringify(state.shapes);
+		var param = {
+			"user": state.username,
+			"name": title,
+			"content": stringifiedArray,
+			"template": false
+		};
 
-	$.ajax({
-		type: "POST",
-		contentType: "application/json; charset=utf-8",
-		url: "http://whiteboard.apphb.com/Home/Save",
-		data: param,
-		dataType: "jsonp",
-		crossDomain: true,
+		$.ajax({
+			type: "POST",
+			contentType: "application/json; charset=utf-8",
+			url: "http://whiteboard.apphb.com/Home/Save",
+			data: param,
+			dataType: "jsonp",
+			crossDomain: true,
 
-		success: function (data) {
+			success: function (data) {
+				$("saveError").hide();
+				$("#saveSuccess").show().delay(3000).fadeOut();
+			},
 
-		},
-
-		error: function (xhr, err) {
-
-		}
-	});
+			error: function (xhr, err) {
+				$("saveError").show().delay(3000).fadeOut();;
+			}
+		});
+	}
+	else {
+		$("#titleEmpty").show().delay(3000).fadeOut();
+	}
 });
 
 $("#login").click(function() {
@@ -612,7 +618,7 @@ $("#login").click(function() {
 			});
 		}
 		else
-			$("#logError").show();
+			$("#logError").show().delay(3000).fadeOut();;
 	}
 });
 
