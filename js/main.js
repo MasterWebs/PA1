@@ -1,7 +1,6 @@
-/**
- * Created by Omar on 16.1.2015.
- */
-
+/***************************************
+	CLASSES
+***************************************/
 function Shape() {
 	// prototype class
 }
@@ -16,16 +15,16 @@ function Rect(x, y, color, strokeColor, fill, lineWidth) {
 	this.type = "rect";
 
 	this.edit = function(x, y) {
-		if(state.startPoint.x < x) {
+		if(state.startPoint.x < x)
 			this.endPoint.x = x;
-		} else {
+		else {
 			this.endPoint.x = state.startPoint.x;
 			this.startPoint.x = x;
 		}
 
-		if(state.startPoint.y < y) {
+		if(state.startPoint.y < y)
 			this.endPoint.y = y;
-		} else {
+		else {
 			this.endPoint.y = state.startPoint.y;
 			this.startPoint.y = y;
 		}
@@ -72,6 +71,7 @@ function Rect(x, y, color, strokeColor, fill, lineWidth) {
 		context.rect(this.startPoint.x, this.startPoint.y, w, h);
 		var contains = context.isPointInPath(x, y);
 		context.closePath();
+
 		if(contains === true) {
 			state.offsetDrag.x = x - this.startPoint.x;
 			state.offsetDrag.y = y - this.startPoint.y;
@@ -80,10 +80,9 @@ function Rect(x, y, color, strokeColor, fill, lineWidth) {
 	}
 }
 
-function Text(text, x, y, color, strokeColor, size, font) {
+function Text(text, x, y, color, size, font) {
 	this.point = new Point(x, y); // point is at lower left corner
 	this.color = color;
-	this.strokeColor = strokeColor;
 	this.size = size;
 	this.font = font;
 	this.text = text;
@@ -94,9 +93,7 @@ function Text(text, x, y, color, strokeColor, size, font) {
 
 		context.font = size + "px " + this.font;
 		context.fillStyle = this.color;
-		context.strokeStyle = this.strokeColor;
 		context.fillText(this.text, this.point.x, this.point.y);
-		context.strokeText(this.text, this.point.x, this.point.y);
 	}
 
 	this.isAt = function(x, y) {
@@ -108,6 +105,7 @@ function Text(text, x, y, color, strokeColor, size, font) {
 		context.rect(this.point.x, this.point.y - h, w, h);
 		var contains = context.isPointInPath(x, y);
 		context.closePath();
+
 		if(contains === true) {
 			state.offsetDrag.x = x - this.point.x;
 			state.offsetDrag.y = y - this.point.y;
@@ -134,7 +132,7 @@ function Circle(x, y, w, color, strokeColor, fill, lineWidth) {
 	this.type = "circle";
 
 	this.edit = function(x, y) {
-		this.w = Math.max(Math.abs(this.point.x - x),
+		this.w = Math.max(Math.abs(this.point.x - x), 
 						  Math.abs(this.point.y - y));
 	}
 
@@ -146,14 +144,14 @@ function Circle(x, y, w, color, strokeColor, fill, lineWidth) {
 		if(this.fill === true) {
 			context.fillStyle = this.color;
 			context.strokeStyle = this.strokeColor;
-			context.arc(this.point.x, this.point.y, this.w, 0, 2*Math.PI, false); 
+			context.arc(this.point.x, this.point.y, this.w, 0, 2 * Math.PI, false); 
 			context.fill();
 			context.stroke();
 		}
 		else {
 			context.strokeStyle = this.strokeColor;
 			context.lineWidth = this.lineWidth;
-			context.arc(this.point.x, this.point.y, this.w, 0, 2*Math.PI, false);
+			context.arc(this.point.x, this.point.y, this.w, 0, 2 * Math.PI, false);
 			context.stroke();
 		}
 	}
@@ -162,9 +160,10 @@ function Circle(x, y, w, color, strokeColor, fill, lineWidth) {
 		var context = state.context;
 		
 		context.beginPath();
-		context.arc(this.point.x, this.point.y, this.w, 0, 2*Math.PI, false);
+		context.arc(this.point.x, this.point.y, this.w, 0, 2 * Math.PI, false);
 		var contains = context.isPointInPath(x, y);
 		context.closePath();
+
 		if(contains === true) {
 			state.offsetDrag.x = x - this.point.x;
 			state.offsetDrag.y = y - this.point.y;
@@ -207,6 +206,7 @@ function Pen(lineWidth, color) {
 			context.lineWidth = this.lineWidth;
 			context.strokeStyle = this.color;
 			context.moveTo(points[0].x, points[0].y);
+
 			for(var i = 1; i < points.length; i++) {
 				context.lineTo(points[i].x, points[i].y);
 				context.moveTo(points[i].x, points[i].y);
@@ -236,6 +236,7 @@ function Pen(lineWidth, color) {
 		context.rect(lowestX, lowestY, w, h);
 		var contains = context.isPointInPath(x, y);
 		context.closePath();
+		
 		if(contains === true) {
 			this.selectedPoint.x = x;
 			this.selectedPoint.y = y;
@@ -290,18 +291,16 @@ function Line(x, y, lineWidth, color, strokeColor) {
 		var start = new Point(Math.min(this.startPoint.x, this.endPoint.x),
 							  Math.min(this.startPoint.y, this.endPoint.y));
 
-		if(w === 0) {
-			// if the line is vertical
+		if(w === 0)	// if the line is vertical
 			w = 2;
-		} else if(h === 0) {
-			// if the line is horizontal
+		else if(h === 0)	// if the line is horizontal
 			h = 2;
-		}
 
 		context.beginPath();
 		context.rect(start.x, start.y, w, h);
 		var contains = context.isPointInPath(x, y);
 		context.closePath();
+
 		if(contains === true) {
 			state.offsetDrag.x = x - this.startPoint.x;
 			state.offsetDrag.y = y - this.startPoint.y;
@@ -328,9 +327,9 @@ Circle.prototype = new Shape();
 Pen.prototype = new Shape();
 Line.prototype = new Shape();
 
-///////////////////////////////////////////////////////////////////////
-
-
+/***************************************
+	GLOBAL VARIABLES
+***************************************/
 function State(canvas) {
 	this.canvas = canvas;
 	this.context = canvas.getContext("2d");
@@ -345,8 +344,6 @@ function State(canvas) {
 	this.offsetDrag = new Point(0, 0); // store the offset from the top left corner
 	this.loggedIn = false;
 	this.username = "";
-	//state.loadTitle = "";
-
 }
 
 function Tools() {
@@ -358,6 +355,10 @@ function Tools() {
 	this.colorSelect = $("#colorSelect").val();
 }
 
+
+/***************************************
+	PROTOTYPES
+***************************************/
 State.prototype.clear = function() {
 	this.context.clearRect(0, 0, this.width, this.height);
 	this.shapes = [];
@@ -372,7 +373,6 @@ State.prototype.drawAll = function() {
 
 		for(var i = 0; i < shapes.length; i++) {
 			var shape = shapes[i];
-
 			shapes[i].draw(context);
 		}
 
@@ -388,6 +388,10 @@ Array.prototype.move = function(from, to) {
 var state = new State(document.getElementById("myCanvas"));
 var tools = new Tools(document.getElementById("myCanvas"));
 
+/***************************************
+	DOCUMENT READY
+***************************************/
+
 $(document).ready(function() {
     setInterval(function() {  state.drawAll(); }, 10);
     $("#myCanvas").mousedown( function(e) {
@@ -397,12 +401,12 @@ $(document).ready(function() {
 
     	switch(tools.nextObject) {
     		case "text":
-	    		// TODO: make text area appear and create new shape
 	    		var text = $("#textInput").val();
 	    		var size = $("#textSize").val();
 	    		var font = $("#font").val();
 
-	    		state.shapes.push(new Text(text, state.startPoint.x, state.startPoint.y, tools.nextColor, tools.strokeColor, size, font));
+	    		state.shapes.push(new Text(text, state.startPoint.x, state.startPoint.y, tools.nextColor, 
+	    								tools.strokeColor, size, font));
 	    		state.valid = false;
 	    		return;
 	    	case "pen":
@@ -411,16 +415,12 @@ $(document).ready(function() {
 	    		state.shapes.push(pen);
 	    		break;
 	    	case "rect":
-	    		state.shapes.push(new Rect(state.startPoint.x,
-	    								state.startPoint.y, 
-	    								tools.nextColor, 
-	    								tools.strokeColor, 
-	    								tools.fill, 
-	    								lineWidth
-	    							));
+	    		state.shapes.push(new Rect(state.startPoint.x, state.startPoint.y, tools.nextColor, tools.strokeColor,
+	    							 	tools.fill, lineWidth));
 	    		break;
 	    	case "circle":
-	    		state.shapes.push(new Circle(state.startPoint.x, state.startPoint.y, 0, tools.nextColor, tools.strokeColor, tools.fill, lineWidth));
+	    		state.shapes.push(new Circle(state.startPoint.x, state.startPoint.y, 0, tools.nextColor, tools.strokeColor,
+	    								tools.fill, lineWidth));
 	    		break;
 	    	case "line":
 	    		state.shapes.push(new Line(state.startPoint.x, state.startPoint.y, lineWidth, tools.nextColor, tools.strokeColor));
@@ -433,10 +433,8 @@ $(document).ready(function() {
 	    				break;
 	    			}
 
-	    			if(i === state.shapes.length - 1) {
-	    				// if we haven't found anything at current point
+	    			if(i === state.shapes.length - 1)	// if we haven't found anything at current point
 	    				state.selected = -1;
-	    			}
     			}
     			break;
     		}
@@ -472,19 +470,16 @@ $(document).ready(function() {
 
 
 	$(".colors").click(function(e) {
-		
 		if($("#colorSelect").val() == "Fill") 
 			tools.nextColor = $(this).data("tool");
 		else 
 			tools.strokeColor = $(this).data("tool");
 	});
-
-	/*$(".colorsStroke").click(function(e) {
-		tools.strokeColor = $(this).data("tool");
-		console.log("stroke " + tools.strokeColor);
-	});*/
-	
 });
+
+/***************************************
+** MOUSE CLICK EVENTS
+***************************************/
 
 $("#clear").click(function() {
 	state.clear();
@@ -511,16 +506,13 @@ $(".object").click(function() {
 	$('#objects button').addClass('active').not(this).removeClass('active')
 	
 	if(tools.nextObject === "text") {
-		console.log("yup");
 		$("#textForm").show();
 		$("#lineForm").hide();
 	}
 	else {
-		console.log("nat");
 		$("#textForm").hide();
 		$("#lineForm").show();
 	}
-
 });
 
 
@@ -547,8 +539,6 @@ $("#template").click(function() {
 });
 
 $("#saveButton").click(function() {
-
-	//var username = $("#username").val();
 	var title = $("#title").val();
 	var stringifiedArray = JSON.stringify(state.shapes);
 	var param = {
@@ -567,15 +557,14 @@ $("#saveButton").click(function() {
 		crossDomain: true,
 
 		success: function (data) {
-			console.log("success");
+
 		},
 
 		error: function (xhr, err) {
-			console.log("error");
+
 		}
 	});
 });
-
 
 $("#login").click(function() {
 	if(!state.loggedIn) {
@@ -600,12 +589,13 @@ $("#login").click(function() {
 				crossDomain: true,
 				success:function(data) {
 					var c = false;
+
 					for(var i = 0; i < data.length; i++) {
 						var tableContent = "";
 						$.each(data, function(i, item) {
-							tableContent += "<tr class='tr'><td class='td' data-id='" + item.ID + "'>" + item.WhiteboardTitle + "</tr></td>";
+							tableContent += "<tr class='tr'><td class='td' data-id='" + item.ID + "'>" +
+												item.WhiteboardTitle + "</tr></td>";
 						});		
-
 						$("#savedDraws").append(tableContent);
 
 						c = data[i].WhiteboardContents;
@@ -617,49 +607,40 @@ $("#login").click(function() {
 
 				},
 				error: function(xhr, err) {
-					console.log("error");
+					
 				}
 			});
 		}
-		else {
+		else
 			$("#logError").show();
-		}
 	}
 });
 
 function getDraw(id) {
-	var param = {
-		"id": id
-	}
-
 	$.ajax({
 		type: "GET",
 		contentType: "application/json; charset=utf-8",
 		url: "http://whiteboard.apphb.com/Home/GetWhiteboard",
-		data: param,
+		data: id,
 		dataType: "jsonp",
 		crossDomain: true,
 		success:function(data) {
-			// console.log(data);
-			
 			var c = data.WhiteboardContents;
 			loadShapes(c);
 		},
+
 		error: function(xhr, err) {
-			console.log("error");
+	
 		}
 	});
 }
 
 function loadShapes(c) {
 	var obj = JSON.parse(c);
-	console.log(obj);
-
 	state.shapes = [];
 
 	for(var i = 0; i < obj.length; i++) {
 		var sh = obj[i];
-		console.log(sh);
 
 		switch(sh.type) {
 			case "text":
@@ -671,7 +652,6 @@ function loadShapes(c) {
 				break;
 			case "pen":
 				state.shapes.push(new Pen(sh.lineWidth, sh.color));
-
 				var pts = sh.points;
 
 				for(var j = 0; j < pts.length; j++) {
@@ -711,8 +691,6 @@ function loadShapes(c) {
 				break;
 		}
 	}
-
-	console.log("it must be false");
 	state.valid = false;
 }
 
