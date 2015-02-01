@@ -1,7 +1,7 @@
 body {
     padding-top: 10px;
     font-family:sans-serif;
-    width: 1195px;
+    width: 1296px;
     margin: 0 auto;
 }
 
@@ -36,10 +36,12 @@ body {
 .toggle {
     display: none;
 }
+
 #logForm {
     width: 262px;
     float: right;
 }
+
 #saveForm {
     width: 426px;
     float: right;
@@ -92,7 +94,6 @@ body {
     float: left;
 }
 
-
 .black {
     background-color: #222;
 }
@@ -113,15 +114,22 @@ body {
     background-color: #FFFFFF;
 }
 
+.orange {
+    background-color: #f0ad4e;
+}
+
+.lightBlue {
+    background-color: #5bc0de;
+}
+
+.pink{
+    background-color: #ffc6c2;
+}
+
 .colors {
     padding: 10px;
     border: 1px solid black;
     margin-top: 5px;
-}
-
-.colors:hover{
-    /*padding: 12px;
-    color: ;*/
 }
 
 strong {
