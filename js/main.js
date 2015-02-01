@@ -360,13 +360,15 @@ function Tools() {
 
 State.prototype.clear = function() {
 	this.context.clearRect(0, 0, this.width, this.height);
+	this.shapes = [];
 }
 
 State.prototype.drawAll = function() {
 	if(!this.valid) {
 		var shapes = this.shapes;
 		var context = this.context;
-		this.clear();
+
+		this.context.clearRect(0, 0, this.width, this.height);
 
 		for(var i = 0; i < shapes.length; i++) {
 			var shape = shapes[i];
@@ -482,6 +484,10 @@ $(document).ready(function() {
 		console.log("stroke " + tools.strokeColor);
 	});*/
 	
+});
+
+$("#clear").click(function() {
+	state.clear();
 });
 
 $("#undo").click(function() {
