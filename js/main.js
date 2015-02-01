@@ -613,7 +613,7 @@ $("#login").click(function() {
 
 				},
 				error: function(xhr, err) {
-					
+					$("loadError").show().delay(3000).fadeOut();
 				}
 			});
 		}
