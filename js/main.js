@@ -6,16 +6,6 @@ function Shape() {
 	// prototype class
 }
 
-function loadShape(startPoint, endPoint) {
-	var context = state.context;
-	context.rect
-
-	var w = Math.abs(this.startPoint.x - this.endPoint.x);
-	var h = Math.abs(this.startPoint.y - this.endPoint.y);
-	context.rect(this.startPoint.x, this.startPoint.y, w, h);
-	context.fill();
-}
-
 function Rect(x, y, color, strokeColor, fill, lineWidth) {
 	this.startPoint = new Point(x, y);
 	this.endPoint = new Point(x, y);
@@ -23,6 +13,7 @@ function Rect(x, y, color, strokeColor, fill, lineWidth) {
 	this.strokeColor = strokeColor;
 	this.fill = fill;
 	this.lineWidth = lineWidth;
+	this.type = "rect";
 
 	this.edit = function(x, y) {
 		if(state.startPoint.x < x) {
@@ -44,8 +35,9 @@ function Rect(x, y, color, strokeColor, fill, lineWidth) {
 		var context = state.context;
 		var w = Math.abs(this.startPoint.x - this.endPoint.x);
 		var h = Math.abs(this.startPoint.y - this.endPoint.y);
-
 		context.beginPath();
+
+		console.log("drawing rect");
 
 		if(this.fill === true) {
 			context.fillStyle = this.color;
@@ -97,6 +89,7 @@ function Text(text, x, y, color, strokeColor, size, font) {
 	this.size = size;
 	this.font = font;
 	this.text = text;
+	this.type = "text";
 
 	this.draw = function() {
 		var context = state.context;
@@ -141,6 +134,7 @@ function Circle(x, y, w, color, strokeColor, fill, lineWidth) {
 	this.strokeColor = strokeColor;
 	this.fill = fill;
 	this.lineWidth = lineWidth;
+	this.type = "circle";
 
 	this.edit = function(x, y) {
 		this.w = Math.max(Math.abs(this.point.x - x),
@@ -200,6 +194,7 @@ function Pen(lineWidth, color) {
 	this.color = color;
 	this.points = [];
 	this.selectedPoint = new Point(0, 0);
+	this.type = "pen";
 
 	// adds new point at x,y
 	this.edit = function(x, y) {
@@ -271,6 +266,7 @@ function Line(x, y, lineWidth, color, strokeColor) {
 	this.lineWidth = lineWidth;
 	this.color = color;
 	this.strokeColor = strokeColor;
+	this.type = "line";
 
 	this.edit = function(x, y) {
 		this.endPoint.x = x;
@@ -393,7 +389,6 @@ var tools = new Tools(document.getElementById("myCanvas"));
 
 $(document).ready(function() {
     setInterval(function() {  state.drawAll(); }, 10);
- 
     $("#myCanvas").mousedown( function(e) {
     	state.startPoint.x = e.pageX - this.offsetLeft;
     	state.startPoint.y = e.pageY - this.offsetTop;
@@ -558,6 +553,7 @@ $("#saveButton").click(function() {
 		"content": stringifiedArray,
 		"template": false
 	};
+
 	$.ajax({
 		type: "POST",
 		contentType: "application/json; charset=utf-8",
@@ -565,19 +561,85 @@ $("#saveButton").click(function() {
 		data: param,
 		dataType: "jsonp",
 		crossDomain: true,
-	success: function (data) {
-		console.log("success");
-	},
-	error: function (xhr, err) {
-		console.log("error");
-	}
+
+		success: function (data) {
+			console.log("success");
+		},
+
+		error: function (xhr, err) {
+			console.log("error");
+		}
 	});
 });
 
+function loadShapes(c) {
+	var obj = JSON.parse(c);
+
+	state.shapes = [];
+
+	for(var i = 0; i < obj.length; i++) {
+		var sh = obj[i];
+		console.log(sh);
+
+		switch(sh.type) {
+			case "text":
+				state.shapes.push(new Text(sh.text, sh.point.x,
+										   sh.point.y, sh.color,
+										   sh.strokeColor, sh.size,
+									 	   sh.font));
+
+				break;
+			case "pen":
+				state.shapes.push(new Pen(sh.lineWidth, sh.color));
+
+				var pts = sh.points;
+
+				for(var j = 0; j < pts.length; j++) {
+					state.shapes[i].edit(pts[j].x, pts[j].y);
+				}
+
+				break;
+			case "rect":
+				state.shapes.push(new Rect(sh.startPoint.x,
+										   sh.startPoint.y,
+										   sh.color,
+										   sh.strokeColor,
+										   sh.fill,
+										   sh.lineWidth));
+
+				state.shapes[i].edit(sh.endPoint.x, sh.endPoint.y);
+
+				break;
+			case "circle":
+				state.shapes.push(new Circle(sh.point.x,
+											 sh.point.y,
+											 sh.w,
+											 sh.color,
+											 sh.strokeColor,
+											 sh.fill,
+											 sh.lineWidth));
+				break;
+			case "line":
+				state.shapes.push(new Line(sh.startPoint.x,
+										   sh.startPoint.y,
+										   sh.lineWidth,
+										   sh.color,
+										   sh.strokeColor));
+
+				state.shapes[i].edit(sh.endPoint.x, sh.endPoint.y);
+
+				break;
+		}
+	}
+
+	console.log(state.shapes);
+	state.valid = false;
+}
+
 $("#loadButton").click(function() {
 	var param = {
-		"user": "omar13",//$("#username").val(),
-		"title": "recta", //$("#title").val(),
+		"user": "dongle",//$("#username").val(),
+		"title": "jo",    //$("#title").val(),
 		"template": false
 	}
 
@@ -588,28 +650,25 @@ $("#loadButton").click(function() {
 		data: param,
 		dataType: "jsonp",
 		crossDomain: true,
-	success:function(data) {
-		var found = false;
-		for(var i = 0; i < data.length; i++) {
-			console.log("data " + data[i]);
+		success:function(data) {
+			var found = false;
+			for(var i = 0; i < data.length; i++) {
+				var tableContent = "";
+				$.each(data, function(i, item) {
+					tableContent += "<tr><td>" + item.WhiteboardTitle + "</tr></td>";
+				});		
+				$("#recentDraws").append(tableContent);
+
+				var c = data[i].WhiteboardContents;
+				loadShapes(c);
+			}
 			
-			var tableContent = "";
-			$.each(data, function(i, item) {
-				tableContent += "<tr><td>" + item.WhiteboardTitle + "</tr></td>";
-			});		
-			$("#recentDraws").append(tableContent);
 
-			var c = data[i].WhiteboardContents.startPoint.x;
-			console.log("c " + c);
-			console.log(c.startPoint);
-		}
 		
-
-	
-	},
-	error: function(xhr, err) {
-		console.log("error");
-	}
+		},
+		error: function(xhr, err) {
+			console.log("error");
+		}
 	});
 
 });
