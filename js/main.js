@@ -504,7 +504,7 @@ $("#redo").click(function() {
 	}
 });
 
-$(".object").click(function(e) {
+$(".object").click(function() {
 	tools.nextObject = $(this).data("tool");
 	$('#objects button').addClass('active').not(this).removeClass('active')
 	
@@ -601,7 +601,7 @@ $("#login").click(function() {
 					for(var i = 0; i < data.length; i++) {
 						var tableContent = "";
 						$.each(data, function(i, item) {
-							tableContent += "<tr><td data-id='" + item.ID + "'>" + item.WhiteboardTitle + "</tr></td>";
+							tableContent += "<tr class='tr'><td class='td' data-id='" + item.ID + "'>" + item.WhiteboardTitle + "</tr></td>";
 						});		
 
 						$("#savedDraws").append(tableContent);
@@ -723,6 +723,8 @@ $("#logOut").click(function() {
 		$("#saveForm").hide();
 		$("#savedDraws").hide();
 		state.username = "";
+		$(".td").remove();
+		$(".tr").remove();
 	}
 });
 
