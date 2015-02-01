@@ -406,7 +406,7 @@ $(document).ready(function() {
 	    		var font = $("#font").val();
 
 	    		state.shapes.push(new Text(text, state.startPoint.x, state.startPoint.y, tools.nextColor, 
-	    								tools.strokeColor, size, font));
+	    								   size, font));
 	    		state.valid = false;
 	    		return;
 	    	case "pen":
@@ -623,11 +623,15 @@ $("#login").click(function() {
 });
 
 function getDraw(id) {
+	var param = {
+		"id": id
+	}
+
 	$.ajax({
 		type: "GET",
 		contentType: "application/json; charset=utf-8",
 		url: "http://whiteboard.apphb.com/Home/GetWhiteboard",
-		data: id,
+		data: param,
 		dataType: "jsonp",
 		crossDomain: true,
 		success:function(data) {
@@ -652,8 +656,7 @@ function loadShapes(c) {
 			case "text":
 				state.shapes.push(new Text(sh.text, sh.point.x,
 										   sh.point.y, sh.color,
-										   sh.strokeColor, sh.size,
-									 	   sh.font));
+										   sh.size, sh.font));
 
 				break;
 			case "pen":
