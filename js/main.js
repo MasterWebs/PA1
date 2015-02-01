@@ -37,8 +37,6 @@ function Rect(x, y, color, strokeColor, fill, lineWidth) {
 		var h = Math.abs(this.startPoint.y - this.endPoint.y);
 		context.beginPath();
 
-		console.log("drawing rect");
-
 		if(this.fill === true) {
 			context.fillStyle = this.color;
 			context.strokeStyle = this.strokeColor;
@@ -113,7 +111,6 @@ function Text(text, x, y, color, strokeColor, size, font) {
 		if(contains === true) {
 			state.offsetDrag.x = x - this.point.x;
 			state.offsetDrag.y = y - this.point.y;
-			console.log("found text!");
 		}
 		return contains;
 	}
@@ -363,13 +360,15 @@ function Tools() {
 
 State.prototype.clear = function() {
 	this.context.clearRect(0, 0, this.width, this.height);
+	this.shapes = [];
 }
 
 State.prototype.drawAll = function() {
 	if(!this.valid) {
 		var shapes = this.shapes;
 		var context = this.context;
-		this.clear();
+
+		this.context.clearRect(0, 0, this.width, this.height);
 
 		for(var i = 0; i < shapes.length; i++) {
 			var shape = shapes[i];
@@ -419,7 +418,6 @@ $(document).ready(function() {
 	    								tools.fill, 
 	    								lineWidth
 	    							));
-	    		console.log(state.shapes);
 	    		break;
 	    	case "circle":
 	    		state.shapes.push(new Circle(state.startPoint.x, state.startPoint.y, 0, tools.nextColor, tools.strokeColor, tools.fill, lineWidth));
@@ -486,6 +484,10 @@ $(document).ready(function() {
 		console.log("stroke " + tools.strokeColor);
 	});*/
 	
+});
+
+$("#clear").click(function() {
+	state.clear();
 });
 
 $("#undo").click(function() {
@@ -638,7 +640,7 @@ function getDraw(id) {
 		dataType: "jsonp",
 		crossDomain: true,
 		success:function(data) {
-			console.log(data);
+			// console.log(data);
 			
 			var c = data.WhiteboardContents;
 			loadShapes(c);
@@ -651,6 +653,7 @@ function getDraw(id) {
 
 function loadShapes(c) {
 	var obj = JSON.parse(c);
+	console.log(obj);
 
 	state.shapes = [];
 
@@ -709,7 +712,7 @@ function loadShapes(c) {
 		}
 	}
 
-	console.log(state.shapes);
+	console.log("it must be false");
 	state.valid = false;
 }
 
